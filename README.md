@@ -44,6 +44,7 @@ Feel free to check <a href="http://backloggery.com/tor">my Backloggery site</a> 
 The script will only display icons for keywords that it recognizes. Keywords are not case sensitive, so you can capitalize them any way you want. More keywords can be added upon request, so feel free to contact me.
 
 Most icons have several different keywords to choose from. Pick whichever one you prefer.
+<p>&nbsp;</p>
 <b>Third party digital distribution stores—theses stores sell games from many different developers</b>
 <p>
 <img src="https://lh3.googleusercontent.com/-gNQGzO6OVp8/U4YVNiESYAI/AAAAAAAABbs/yFfiybWjTNk/s800/amazon.png" /> amazon, amazon.com <br/>
@@ -56,7 +57,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 <img src="https://lh6.googleusercontent.com/-T6pBLW644C4/U4YaRDp7F-I/AAAAAAAABc0/tXWjiAAenZ0/s800/gamefly.png" /> gamefly, gamefly.com<br/> 
 <img src="https://www.gamersgate.com/favicon.ico" /> gamersgate.com, gamersgate <br/>
 <img src="https://www.gamestop.com/favicon.ico" /> gamestop.com, gamestop<br/>
-<img src="https://getgamesgo.com/static/images/favicon.ico" /> getgames, getgamesgo <br/>
+<img src="https://drive.google.com/uc?id=1w1yMX9TzI4cuwvJwlBkXaXQ1IIp3BWAQSQ" /> getgames, getgamesgo <br/>
 <img src="https://lh3.googleusercontent.com/-n3zHP5ZTEk8/U4YoNRILjFI/AAAAAAAABgs/donquTXcOI8/s800/gamesforwindows.png" /> gfw, gamesforwindows, gamesforwindowsmarketplace <br/>
 <img src="https://www.greenmangaming.com/static/favicon.ico" /> gmg, greenmangaming, greenmangaming.com<br/>
 <img src="https://lh3.googleusercontent.com/-PhuK9fCqWXg/U4sbbMxLmYI/AAAAAAAABhQ/xYtsQcM6LiY/s800/gog.png" /> gog.com, gog <br/>
@@ -65,7 +66,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 <img src="https://lh6.googleusercontent.com/-Pc3nu4XDPyE/U4YiGtNVuyI/AAAAAAAABgc/5HFCyvMykiQ/s800/impulse.png" /> impulse, impulsedriven.com <br/>
 <img src="https://lh6.googleusercontent.com/-7W3inoXb0rA/VLJUWHMPa1I/AAAAAAAABmI/v2l2bu1WiB8/s800/indiecity.png" height="16" width="16" /> indiecity, indiecity.com <br/>
 <img src="https://www.indiegala.com/favicon.ico" /> indiegala, indiegala.com <br/>
-<img src="https://indiegamestand.com/favicon.ico" /> indiegamestand, indiegamestand.com <br/>
+<img src="https://drive.google.com/open?id=1i8bjKbIE6JfMNUanDz6-vri0HfI4ZDSI" /> indiegamestand, indiegamestand.com <br/>
 <img src="https://lh5.googleusercontent.com/-CZqVqn8d67I/VLJUWchVXyI/AAAAAAAABmE/ehhftDUkpi4/s800/itch.io.png" height="16" width="16" /> itch.io <br/>
 <img src="https://lh5.googleusercontent.com/-1YJ5GkrcnBg/U4YbYfGR41I/AAAAAAAABds/hk6DEBHe6CI/s800/nintendo.png" /> nintendo <br/>
 <img src="https://lh6.googleusercontent.com/-yFqz3QiC_kA/VLJWAcx6cbI/AAAAAAAABmo/WhfJU1JhuoU/s800/nuuvem.png" height="16" width="16" /> nuuvem, nuuvem.com.br <br/>
@@ -80,7 +81,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 <img src="https://lh6.googleusercontent.com/-QBuHwtRK93I/U4YapJUfBEI/AAAAAAAABdU/MwwsXQ_3fW4/s800/yawma.png" /> yawma, yawma.net <br/>
 </p>
 <p>
-<b>Self-publishing developers—stores that sell games from a single developer</b>
+<b>Self-publishing developers—stores that sell games from a single developer</b><br/>
 <img src="https://lh3.googleusercontent.com/-cqTpbNOc3Eo/U4YekNHEraI/AAAAAAAABf0/Uimh4LlA9fE/s800/2dboy.png" /> 2dboy.com, 2dboy<br/> 
 <img src="https://lh5.googleusercontent.com/-G1BUB8sbDYM/U4Ycre-N0cI/AAAAAAAABe4/XCkQRlAKkRA/s800/amanitadesign.png" /> amanita-design.net, amanitadesign <br/>
 <img src="https://lh4.googleusercontent.com/-hiTvab7fNeQ/U4YVNkVzdbI/AAAAAAAABcA/9IR0d7vj5Rw/s800/areogames.png" /> areo.areograph.com, areogames <br/>
@@ -98,17 +99,19 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 <img src="https://lh5.googleusercontent.com/-wXSLqwLwihM/U4YcUesxPEI/AAAAAAAABeM/qecM551KaEc/s800/zombie-cow.png" /> zombie-cow.com, zombie-cow <br/>
 </p>
 <p>
-<b>Crowdfunding sites—games financed from a crowdfunding campaign</b>
+<b>Crowdfunding sites—games financed from a crowdfunding campaign</b><br/>
 <img src="https://lh5.googleusercontent.com/-33drwcq-8Mg/U4YbYdhNlbI/AAAAAAAABdo/o1tR4OM3SaA/s800/indiegogo.png" /> indiegogo, indiegogo.com <br/>
 <img src="https://lh4.googleusercontent.com/-QxASAMDxDtY/U4YbYdMopKI/AAAAAAAABd0/aktUFbnE_Lk/s800/kickstarter.png" /> kickstarter, kickstarter.com <br/>
 </p>
 <p>
-<b>Miscellaneous icons (not counted in the digital distribution services chart)</b>
+<b>Miscellaneous icons (not counted in the digital distribution services chart)</b><br/>
 <img src="https://lh3.googleusercontent.com/-iwXya8FD7AM/U4YVOp6-AvI/AAAAAAAABbk/WBMb1AgtN2c/s800/cart.png" /> cartridge <br/>
 <img src="https://lh6.googleusercontent.com/-VQx0m0aF2vU/U4Yee7XwMFI/AAAAAAAABfY/iQuU-QE9jJA/s800/collectors.png" /> collectorsedition, specialedition <br/>
 <img src="https://lh6.googleusercontent.com/-fgYO_GO8n0A/U4Yee6LkbrI/AAAAAAAABfc/syry88tZqUs/s800/disc.png" /> disc <br/>
 <img src="https://lh4.googleusercontent.com/-Fw5IgzTXS0E/U4Yee5J6qWI/AAAAAAAABfs/1I6iJpnY46w/s800/floppy.png" /> floppy <br/>
 <img src="https://lh5.googleusercontent.com/-r8C-lX0w_bI/U4YefafJe7I/AAAAAAAABfo/niNWzjrY3zk/s800/soundtrack.png" /> soundtrack <br/>
+<img src="https://www.vive.com/static/images/favicon.ico" /> vive <br/>
+<img src="https://static.oculus.com/web/www_static/production/US/4a9fcf4a36ddb3b04c2a311d67ae58f39b17a5c5/baxter/baxter-0.6.9/images/meta/favicon.png" /> oculus, rift <br/>
 </p>
 
 <h4>Attribution</h4>

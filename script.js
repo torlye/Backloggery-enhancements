@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         Tor's Backloggery enhancements
-// @version      2.1.16
+// @version      2.1.18
 // @namespace    werhi23uhkjwesda
 // @description  Adds pie charts and other enhancements to backloggery.com
 // @copyright    2010+, Tor 
 // @license      MIT License; http://www.opensource.org/licenses/mit-license.php
 // @match        http://backloggery.com/*
 // @match        http://www.backloggery.com/*
+// @match        https://backloggery.com/*
+// @match        https://www.backloggery.com/*
 // @grant        none
 // @require      https://code.jquery.com/jquery-1.8.3.min.js
 // ==/UserScript==
@@ -141,6 +143,9 @@ ddicons['nuuvem'] = 52;
 ddicons['nuuvem.com.br'] = 52;
 ddicons['windowsstore'] = 53;
 ddicons['itch.io'] = 54;
+ddicons['vive'] = 55;
+ddicons['oculus'] = 56;
+ddicons['rift'] = 56;
 
 //Do not count these icons in the digital distribution stores chart
 miscIcons['floppy'] = 16;
@@ -173,7 +178,7 @@ icon_urls[19] = "https://lh5.googleusercontent.com/-r8C-lX0w_bI/U4YefafJe7I/AAAA
 icon_urls[20] = "https://battle.net/static/images/meta/favicon.ico";
 icon_urls[21] = "https://lh6.googleusercontent.com/-QRWAZw-QeVI/U4YbLQRWCvI/AAAAAAAABdc/UM6aD_OC45Q/s800/xboxlive.png";
 icon_urls[22] = "https://lh6.googleusercontent.com/-VQx0m0aF2vU/U4Yee7XwMFI/AAAAAAAABfY/iQuU-QE9jJA/s800/collectors.png";
-icon_urls[23] = "https://getgamesgo.com/static/images/favicon.ico";
+icon_urls[23] = "https://drive.google.com/uc?id=1w1yMX9TzI4cuwvJwlBkXaXQ1IIp3BWAQSQ";
 icon_urls[24] = "https://lh3.googleusercontent.com/-n3zHP5ZTEk8/U4YoNRILjFI/AAAAAAAABgs/donquTXcOI8/s800/gamesforwindows.png";
 icon_urls[25] = "https://lh4.googleusercontent.com/-8k0SFFIFooQ/U4YY4QHg-fI/AAAAAAAABco/6yRzMjhm3BA/s800/googleplay.png";
 icon_urls[26] = "https://lh6.googleusercontent.com/-QBuHwtRK93I/U4YapJUfBEI/AAAAAAAABdU/MwwsXQ_3fW4/s800/yawma.png";
@@ -194,7 +199,7 @@ icon_urls[40] = "https://static2.cdn.ubi.com/gamesites/uplay/201212201711/img/fa
 icon_urls[41] = "https://lh6.googleusercontent.com/-mquB7vxjefw/U4YcrV1mJ8I/AAAAAAAABfE/N8IEKbWLgv8/s800/freebird.png";
 icon_urls[42] = "https://www.indiegala.com/favicon.ico";
 icon_urls[43] = "https://lh4.googleusercontent.com/-QxASAMDxDtY/U4YbYdMopKI/AAAAAAAABd0/aktUFbnE_Lk/s800/kickstarter.png";
-icon_urls[44] = "https://indiegamestand.com/favicon.ico";
+icon_urls[44] = "https://drive.google.com/uc?id=1i8bjKbIE6JfMNUanDz6-vri0HfI4ZDSI";
 icon_urls[45] = "https://lh5.googleusercontent.com/-33drwcq-8Mg/U4YbYdhNlbI/AAAAAAAABdo/o1tR4OM3SaA/s800/indiegogo.png";
 icon_urls[46] = "https://www.gamestop.com/favicon.ico";
 icon_urls[47] = "https://lh5.googleusercontent.com/-JqxT5YXGyxo/VLJUVkpErPI/AAAAAAAABmQ/IQcgSJH8iGQ/s800/groupees.png";
@@ -205,6 +210,8 @@ icon_urls[51] = "https://lh6.googleusercontent.com/-7W3inoXb0rA/VLJUWHMPa1I/AAAA
 icon_urls[52] = "https://lh6.googleusercontent.com/-yFqz3QiC_kA/VLJWAcx6cbI/AAAAAAAABmo/WhfJU1JhuoU/s800/nuuvem.png";
 icon_urls[53] = "https://lh3.googleusercontent.com/-L0Ae5fzDP9I/VLJUXP5o9RI/AAAAAAAABl8/xb9GYMwX3F0/s800/windowsstore.png";
 icon_urls[54] = "https://lh5.googleusercontent.com/-CZqVqn8d67I/VLJUWchVXyI/AAAAAAAABmE/ehhftDUkpi4/s800/itch.io.png";
+icon_urls[55] = "https://www.vive.com/static/images/favicon.ico";
+icon_urls[56] = "https://static.oculus.com/web/www_static/production/US/4a9fcf4a36ddb3b04c2a311d67ae58f39b17a5c5/baxter/baxter-0.6.9/images/meta/favicon.png";
 
 //Icons for game systems defined by backloggery.com
 systemIcons['BNet'] = "Battle.net";
