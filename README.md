@@ -66,7 +66,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 <img src="https://lh6.googleusercontent.com/-Pc3nu4XDPyE/U4YiGtNVuyI/AAAAAAAABgc/5HFCyvMykiQ/s800/impulse.png" /> impulse, impulsedriven.com <br/>
 <img src="https://lh6.googleusercontent.com/-7W3inoXb0rA/VLJUWHMPa1I/AAAAAAAABmI/v2l2bu1WiB8/s800/indiecity.png" height="16" width="16" /> indiecity, indiecity.com <br/>
 <img src="https://www.indiegala.com/favicon.ico" /> indiegala, indiegala.com <br/>
-<img src="https://drive.google.com/open?id=1i8bjKbIE6JfMNUanDz6-vri0HfI4ZDSI" /> indiegamestand, indiegamestand.com <br/>
+<img src="https://drive.google.com/uc?id=1i8bjKbIE6JfMNUanDz6-vri0HfI4ZDSI" /> indiegamestand, indiegamestand.com <br/>
 <img src="https://lh5.googleusercontent.com/-CZqVqn8d67I/VLJUWchVXyI/AAAAAAAABmE/ehhftDUkpi4/s800/itch.io.png" height="16" width="16" /> itch.io <br/>
 <img src="https://lh5.googleusercontent.com/-1YJ5GkrcnBg/U4YbYfGR41I/AAAAAAAABds/hk6DEBHe6CI/s800/nintendo.png" /> nintendo <br/>
 <img src="https://lh6.googleusercontent.com/-yFqz3QiC_kA/VLJWAcx6cbI/AAAAAAAABmo/WhfJU1JhuoU/s800/nuuvem.png" height="16" width="16" /> nuuvem, nuuvem.com.br <br/>
