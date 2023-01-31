@@ -1,15 +1,16 @@
 // ==UserScript==
-// @name         <%= pkg.name %><%= pkg.env %>
-// @namespace    https://github.com/<%= pkg.author %>
+// @name         Tor's Backloggery enhancements
 // @version      <%= pkg.version %>
+// @namespace    werhi23uhkjwesda
 // @description  <%= pkg.description %>
 // @author       <%= pkg.author %>
-// @include      *
+// @copyright    2010+, Tor 
+// @license      MIT License; http://www.opensource.org/licenses/mit-license.php
+// @match        http://backloggery.com/*
+// @match        http://www.backloggery.com/*
+// @match        https://backloggery.com/*
+// @match        https://www.backloggery.com/*
 // @icon         https://cdn-images-1.medium.com/max/1187/1*JsyV8lXMuTbRVLQ2FPYWAg.png
-// @grant        GM_setValue
-// @grant        GM_getValue
-// @grant        GM_listValues
-// @grant        GM_deleteValue
-// @grant        GM_addStyle
-// @grant        GM_info
+// @grant        none
+// @require      https://code.jquery.com/jquery-1.8.3.min.js
 // ==/UserScript==

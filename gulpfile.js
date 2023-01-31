@@ -5,7 +5,6 @@ const Ts = require('gulp-typescript');
 const Srcmap = require('gulp-sourcemaps');
 const Header = require('gulp-header');
 const Inject = require('gulp-inject-string')
-const Min = require('gulp-uglify-es').default;
 const Fs = require('fs');
 const pkg = require('./package.json');
 
@@ -61,14 +60,6 @@ const releaseEnv = () => {
         env = 'release';
         resolve();
     });
-};
-
-/** Task to minify the userscript */
-const minify = () => {
-    const loc = basePathEnv();
-    return Gulp.src(`${loc.dest}/${loc.name}`)
-        .pipe(Min())
-        .pipe(Gulp.dest(loc.dest));
 };
 
 /** Task to insert a userscript header from a file, with package.json info */
@@ -130,7 +121,6 @@ exports.watch = () => {
 exports.release = series(
     parallel(clean, releaseEnv),
     procTS_build,
-    minify,
     insertHead
 );
 
