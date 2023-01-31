@@ -10,7 +10,7 @@
 // @match        http://www.backloggery.com/*
 // @match        https://backloggery.com/*
 // @match        https://www.backloggery.com/*
-// @icon         https://cdn-images-1.medium.com/max/1187/1*JsyV8lXMuTbRVLQ2FPYWAg.png
+// @icon         https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icon128.png
 // @grant        none
-// @require      https://code.jquery.com/jquery-1.8.3.min.js
+// @require      https://code.jquery.com/jquery-1.12.4.min.js
 // ==/UserScript==

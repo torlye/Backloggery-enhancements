@@ -1,17 +1,3 @@
-// ==UserScript==
-// @name         Tor's Backloggery enhancements
-// @version      2.1.18
-// @namespace    werhi23uhkjwesda
-// @description  Adds pie charts and other enhancements to backloggery.com
-// @copyright    2010+, Tor 
-// @license      MIT License; http://www.opensource.org/licenses/mit-license.php
-// @match        http://backloggery.com/*
-// @match        http://www.backloggery.com/*
-// @match        https://backloggery.com/*
-// @match        https://www.backloggery.com/*
-// @grant        none
-// @require      https://code.jquery.com/jquery-1.8.3.min.js
-// ==/UserScript==
 /* This script uses icons from the "Silk" and "Diagona" icon sets, which may 
 be found at http://www.famfamfam.com/lab/icons/silk/ 
 and http://p.yusukekamiyamane.com/
@@ -37,10 +23,10 @@ var otherThreshold = 0.04
 var chartWidth = 281;
 var chartHeight = 100;
 
-var ddicons = new Array();
-var miscIcons = new Array();
-var icon_urls = new Array();
-var systemIcons = new Array();
+const ddicons: Record<string, number> = {};
+const miscIcons: Record<string, number> = {};
+const icon_urls: string[] = [];
+const systemIcons: Record<string, string> = {};
 
 //Association between keywords and icons
 ddicons['gog.com'] = 0;
@@ -233,13 +219,13 @@ systemIcons['UPlay'] = "UPlay";
 systemIcons['WinStr'] = "WindowsStore";
 
 //Variables for gathering statistics
-var downloadServiceStatistics = new Object();
-var yearStatistics = new Object();
+var downloadServiceStatistics: Record<string, number> = {};
+var yearStatistics: Record<string, number> = {};
 var downloadServiceTotalCount = 0;
 var yearTotalCount = 0;
 var gamesSum = 0;
-var systemCount = new Object();
-var ownershipCount = new Array(6);
+var systemCount: Record<string, number> = {};
+var ownershipCount: number[] = new Array(6);
 for (let i = 0; i < ownershipCount.length; i++)
   ownershipCount[i] = 0;
 
@@ -250,7 +236,7 @@ function gameListUpdated() {
   
   var gameboxesProcessed = 0;
   
-  $("section.gamebox:not(.processed):not(.boxtop):not(.systemend)").each(function(index) {
+  $("section.gamebox:not(.processed):not(.boxtop):not(.systemend)").each(function(this: Element, index) {
     if (enableLogging)
       log("Processing gamebox "+$(this).find("h2 b:first").text());
     
@@ -289,14 +275,14 @@ function gameListUpdated() {
       ownershipCount[0]++;
   
     //Parse words
-    var words = gameRow2.text().split(" ");
-    var hasYear = false;
-    for (let i in words) {
-      var word = words[i];
+    const words: Array<string|null> = gameRow2.text().split(" ");
+    let hasYear = false;
+    for (const i in words) {
+      const word = words[i];
       
       //Get year
       if (!hasYear) {
-        hasYear = createYearLabelFromKeyWord(word, gameRow1.find("b:first"));
+        hasYear = createYearLabelFromKeyWord(word as string, gameRow1.find("b:first"));
         if (hasYear) {
           words[i] = null;
           continue;
@@ -304,7 +290,7 @@ function gameListUpdated() {
       }
       
       //Create icons from keyword
-      if (createIconsFromKeyWord(word, gameRow1)) {
+      if (createIconsFromKeyWord(word as string, gameRow1)) {
         words[i] = null;
         continue;
       }
@@ -328,22 +314,22 @@ function gameListUpdated() {
 
 //Process now playing list
 function processNowPlayingList() {
-  $("div.npgame").each(function(index) {
-    var progressDiv = $(this).children().eq(-2);
-    var words = progressDiv.contents().get(0).getAttribute("data-torscriptdata").split(" ");
-    var hasYear = false;
+  $("div.npgame").each(function(this: Element, index) {
+    const progressDiv = $(this).children().eq(-2);
+    const words: Array<string|null> = progressDiv.contents().get(0).getAttribute("data-torscriptdata")?.split(" ") ?? [];
+    let hasYear = false;
     progressDiv.prepend("<span class='scripticons'></span>");
-    for (let i in words) {
-      var word = words[i];
+    for (const i in words) {
+      const word = words[i];
       if (!hasYear) {
-        hasYear = createYearLabelFromKeyWord(word, progressDiv.prev());
+        hasYear = createYearLabelFromKeyWord(word as string, progressDiv.prev());
         if (hasYear) {
           words[i] = null;
           continue;
         }
       }
       
-      if (createIconsFromKeyWord(word, progressDiv.find("span.scripticons"))) {
+      if (createIconsFromKeyWord(word as string, progressDiv.find("span.scripticons"))) {
         words[i] = null;
         continue;
       }
@@ -354,14 +340,14 @@ function processNowPlayingList() {
 
 //Process multitap
 function processMultitap() {
-  $("div.friend li").each(function(index) {
+  $("div.friend li").each(function(this: Element, index) {
     if ($(this).contents().length < 4) return;
-    var words = $(this).contents().get(3).getAttribute("data-torscriptdata").split(" ");
-    var hasYear = false;
+    const words: Array<string|null> = $(this).contents().get(3).getAttribute("data-torscriptdata")?.split(" ") ?? [];
+    const hasYear = false;
     $(this).append("<span class='scripticons'></span>");
     for (let i in words) {
-      var word = words[i];
-      if (createIconsFromKeyWord(word, $(this).find("span.scripticons"))) {
+      const word = words[i];
+      if (createIconsFromKeyWord(word as string, $(this).find("span.scripticons"))) {
         words[i] = null;
         continue;
       }
@@ -370,7 +356,7 @@ function processMultitap() {
   });
 }
 
-function createYearLabelFromKeyWord(word, yearNode) {
+function createYearLabelFromKeyWord(word: string, yearNode: JQuery) {
   const year = /^\((\d{4})\)$/.exec($.trim(word));
   if (year) {
     log("Appending year node "+year[0]);
@@ -386,12 +372,12 @@ function createYearLabelFromKeyWord(word, yearNode) {
   return false;
 }
 
-function addSystemIcon(system, iconsNode) {
+function addSystemIcon(system: string, iconsNode: JQuery) {
   if (systemIcons[system])
     createIconsFromKeyWord("["+systemIcons[system]+"]", iconsNode);
 }
 
-function createIconsFromKeyWord(word, iconsNode) {
+function createIconsFromKeyWord(word: string, iconsNode: JQuery) {
   var keyWord = /^\[([\w\.-]+)\]$/.exec($.trim(word));
   if (keyWord) {
     log("Found keyword "+keyWord[1]);
@@ -420,12 +406,12 @@ function createIconsFromKeyWord(word, iconsNode) {
   return false;
 }
 
-function appendIconNumberToNode(iconNumber, iconTitle, node) {
+function appendIconNumberToNode(iconNumber:number, iconTitle: string, node: JQuery) {
   log("Appending icon "+iconNumber+" with title "+iconTitle+" to current node");
   node.append(createIconFromURLandTitle(icon_urls[iconNumber], iconTitle));
 }
 
-function createIconFromURLandTitle(url, title) {
+function createIconFromURLandTitle(url: string, title: string) {
   return ' <span class="info"><img width="16" height="16" src="' + url + 
     '" alt="' + title + '" title="' + title + '" ' + 
     'style="margin-bottom: -1px;" /></span> ';
@@ -446,7 +432,7 @@ function updateCharts() {
   updateYearChart(headerSection.find('div#chartDiv2'));
 }
 
-function updateStatusChart(headerSection) {
+function updateStatusChart(headerSection: JQuery) {
   var img = headerSection.find("#statusChart");
   if (img.length > 0)
     return;
@@ -478,7 +464,7 @@ function updateStatusChart(headerSection) {
   headerSection.append(imgHtml);
 }
 
-function updateSystemChart(headerSection) {
+function updateSystemChart(headerSection: JQuery) {
   var img = headerSection.find("#systemChart");
   
   if (gamesSum < 1) {
@@ -502,7 +488,7 @@ function updateSystemChart(headerSection) {
   }
 }
 
-function updateOwnershipChart(headerSection) {
+function updateOwnershipChart(headerSection: JQuery) {
   var img = headerSection.find("#ownershipChart");
   
   if (gamesSum < 1) {
@@ -526,7 +512,7 @@ function updateOwnershipChart(headerSection) {
   }
 }
 
-function updateDDserviceChart(headerSection) {
+function updateDDserviceChart(headerSection: JQuery) {
   var img = headerSection.find("#ddChart");
   
   if (downloadServiceTotalCount < 1) {
@@ -550,7 +536,7 @@ function updateDDserviceChart(headerSection) {
   }
 }
 
-function updateYearChart(headerSection) {
+function updateYearChart(headerSection: JQuery) {
   var img = headerSection.find("#yearChart");
   
   if (yearTotalCount < 2) {
@@ -565,7 +551,7 @@ function updateYearChart(headerSection) {
       img.attr("src", url);
     } else {
       log("Adding year chart");
-      var imgHtml = "<img src='" + url + 
+      const imgHtml = "<img src='" + url + 
       "' title='Release years chart' alt='Release years chart' id='yearChart' " +
       "width='" + chartWidth*2 + "' height='" + chartHeight + "'/> ";
       headerSection.append(imgHtml);
@@ -598,7 +584,7 @@ function createSystemChartUrl() {
 }
 
 function createOwnershipChartUrl() {
-  var ownershipLabels = ["Owned", "Household", "Subscription", "Borrowed/Rented", "Formerly Owned", "Other"];
+  const ownershipLabels = ["Owned", "Household", "Subscription", "Borrowed/Rented", "Formerly Owned", "Other"];
     
   //Use chart colors similar to the ownership icons
   var colors = ["b6b718", "fffcb5", "dec123", "7a9e9c", "9bacff", "9b89b6"];
@@ -649,7 +635,7 @@ function createDDserviceChartUrl() {
 }
 
 function createYearChartUrl() {
-  var years = new Array();
+  var years: string[] = new Array();
   var yearStatisticsIdx = 0;
   var highestValue = 0;
 
@@ -696,7 +682,7 @@ function createYearChartUrl() {
 }
 
 //Creates pie chart from parameters
-function createPieChart(data, labels, colors, transparent, width, height){
+function createPieChart(data: string, labels: string, colors: string, transparent: boolean, width: number, height:number){
   var pieChartUrl = "http://chart.apis.google.com/chart" + 
     "?cht=p&chs=" + width + "x" + height + 
     "&chd=t:" + data + "&chl=" + labels;
@@ -710,68 +696,36 @@ function createPieChart(data, labels, colors, transparent, width, height){
   return pieChartUrl;
 }
 
-function isValid(variable) {
+function isValid(variable: any) {
   if (typeof variable != 'undefined' && variable != null) {
     return true;
   }
   return false;
 }
 
-function isValidAndNotEmpty(variable) {
+function isValidAndNotEmpty(variable: any) {
   if (isValid(variable) && variable != "") {
     return true;
   }
   return false;
 }
 
-function log(message) {
+function log(message: string) {
   if (enableLogging) {
     var now = new Date();
-    var addZero = function(d) {
+    var addZero = function(d: number|string) {
       if (d < 10) d = "0" + d; return d;
     };
-    var millis = now.getMilliseconds();
-    let millisString: string = millis.toString();
-    if (millis < 10) millisString = "00" + millis;
-    else if (millis < 100) millisString = "0" + millis;
+    var millis: number|string = now.getMilliseconds();
+    if (millis < 10) millis = "00" + millis;
+    else if (millis < 100) millis = "0" + millis;
     
     const displayMessage = addZero(now.getHours()) + ":" +
       addZero(now.getMinutes()) + ":" +
       addZero(now.getSeconds()) + ":" +
-      millisString + " " + message;
+      millis + " " + message;
     console.log(displayMessage);
   }
-}
-
-//setCookie and getCookie functions from w3schools.com
-function setCookie(c_name,value,exdays) {
-  var exdate=new Date();
-  exdate.setDate(exdate.getDate() + exdays);
-  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-  document.cookie=c_name + "=" + c_value;
-  log("Saved cookie " + c_name + " with value " + value);
-}
-
-function getCookie(c_name)
-{
-  var i,x,y,ARRcookies=document.cookie.split(";");
-  for (i=0;i<ARRcookies.length;i++) {
-    x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-    y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-    x=x.replace(/^\s+|\s+$/g,"");
-    if (x==c_name) {
-      log("Retrieved cookie " + c_name + " with value " + unescape(y));
-      return unescape(y);
-    }
-  }
-  log("Cookie " + c_name + " not found");
-}
-
-function getCookieOrDefaultValue(c_name, defaultValue) {
-  var val = getCookie(c_name);
-  if (isValidAndNotEmpty(val))
-    return val;
-  return defaultValue;
 }
 
 function attachGameListEventReceiver() {
