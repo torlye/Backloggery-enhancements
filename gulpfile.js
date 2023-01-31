@@ -16,11 +16,11 @@ const globs = {
 const path = {
     scripts: {
         dest: 'release/',
-        name: `${pkg.name}.user.js`
+        name: `script.js`
     },
     dev_scripts: {
         dest: 'build/',
-        name: `${pkg.name}_dev.user.js`
+        name: `script.js`
     }
 }
 
@@ -109,6 +109,20 @@ const procTS_build = () => {
     );
 };
 
+const jQuery = () => {
+    const loc = basePathEnv();
+    return (Gulp.src('node_modules/jquery/dist/jquery.min.js')
+        .pipe(Gulp.dest(loc.dest)));
+};
+
+const Manifest = (cb) => {
+    const loc = basePathEnv();
+    const manifestJson = require('./manifest.json');
+    manifestJson.version = pkg.version;
+    Fs.writeFileSync(loc.dest+'/manifest.json', JSON.stringify(manifestJson, undefined, 2), { encoding: 'utf8' });
+    cb();
+};
+
 /** NPM build task. Use for one-off development */
 exports.build = series(clean, procTS_dev, insertHead);
 
@@ -121,7 +135,8 @@ exports.watch = () => {
 exports.release = series(
     parallel(clean, releaseEnv),
     procTS_build,
-    insertHead
+    insertHead,
+    parallel(jQuery, Manifest)
 );
 
 /** NPM clean task. Use for cleaning the release directory */
