@@ -178,3 +178,45 @@ This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk
 - [The Backloggery](http://backloggery.com/)
 - [Unofficial Backloggery Steam group](http://steamcommunity.com/groups/backloggery)
 - [Tor's Backloggery account](http://backloggery.com/tor)
+
+
+## Changes
+- 2.2.0: (Technical) Refactored the code to TypeScript and using an npm project to build.
+- 2.1.18: Fixed support for Backloggery's new https URL. Added new icons for Oculus and Vive. Fixed a couple of broken icons. 
+- 2.1.16: Added icons for Big Fish Games, DotEmu, Groupees, IndieCity, Itch.io, Nuuvem, Playism, and Windows Store. Fixed Humble Bundle icon. Added icons for several digital distribution stores that are registered as "systems" on the Backloggery site. Technical change: Removed inline jQuery.
+- 2.1.15: Updated the ownership chart to take account for the new "Household" and "Subscription" categories. Fixed GOG icon.
+- 2.1.14: Added icon for GameStop. Updated all icons to use https and have 16x16 px size to improve compatibility with greasyfork.org. Fixed icons for Impulse, Games for Windows Live, Big Finish Games.
+- 2.1.12: Moved script to greasyfork.org because userscripts.org is unstable. Temporarily disabled update notification function because it depended on the userscripts.org website. Added the first version of the Chrome extension.
+- 2.1.11: Added icons for Indiegogo and IndieGameStand.
+- 2.1.10: Fixed icon for Humble Bundle.
+- 2.1.9: Added icons for Freebird Games, Indie Gala and Kickstarter.
+- 2.1.8: Added icon for Uplay. Fixed several icons which had stopped working; Google Play, GameFly, Get Games and Battle.net.
+- 2.1.7: Fixed the PSN icon which stopped working.
+- 2.1.6: Added icon for Green Man Gaming.
+- 2.1.5: Added icon for Amazon digital games.
+- 2.1.4: Added icon for Indie Royale and GameFly. Added option to use 'googleplay' keyword since Android Market was re-branded to Google Play. Fixed broken icon for the now defunct Direct2Drive digital distribution store.
+- 2.1.3: Fixed icons in Now Playing list after site update. Added icons to Multitap on the front page (icon support on the Multitap page, will be added later). Created update checking feature for Chrome and Firefox which will notify about script updates. Note: Chrome users please check that you are running Chrome version 13 or newer before installing the latest version of the script. (Wrench menu -> About Google Chrome) If you are not on the latest version, the act of opening the About dialog should trigger the update (on Windows).
+- 2.1.2: Fixed pie chart data bug.
+- 2.1.1: Added icons for Nintendo, PSN, Origin, Size Five Games. Fixed icons for Zombie Cow studios, Games for Windows Marketplace (now merged with Xbox)
+- 2.1.0: Charts are back! This update also adds GOG/Steam icons for games with system = Steam or Good Old Games.
+- 2.0.0: The first version to support the new backloggery site. This update brings back the icon and release year functionality. Charts and filtering will come later.
+- 1.3.6: Added icons for Beamdog, casebookthegame.com and theballthegame.com. Updated Android Market icon.
+- 1.3.5: Added icons for Desura, YAWMA and The Humble Indie Bundle.
+- 1.3.4: Added icon for Android devices and new keyword GFW for Games for Windows Marketplace. Fixed Greenhouse icon.
+- 1.3.3: Added icons for Get Games, Games for Windows Marketplace and for collector's/special editions. Updated the GOG icon to the most recent version.
+- 1.3.2: Fixed Battle.net and Xbox Live icons.
+- 1.3.1: Fixed Battle.net icon.
+- 1.3.0: Added real-time filtering/search feature for game titles.
+- 1.2.7: Added Xbox Live icon (for Xbox Live Marketplace, Xbox Live Arcade etc.)
+- 1.2.6: Improved icons for Telltale Games, Bit-Blot, Big Finish Games and Areo Games.
+- 1.2.5: Bugfix: Filtering by digital distribution service should now work correctly for games in compilations.
+- 1.2.4: Added Battle.net icon.
+- 1.2.3: Added soundtrack icon.
+- 1.2.2: Bugfix: Fixed bug where the script recognized keywords inside other words, e.g. vertigogaming.net -> GOG. Added option for using square brackets around keywords and parentheses  around years, in order to avoid unintentional conversion of words into icons and years into year labels.
+- 1.2.1: New icons, cosmetic changes.
+- 1.2.0: Added two new pie charts (completion status and digital distribution services), release year functionality including bar chart, and option to filter the My Games list by digital distribution services.
+- 1.1.2: Fixed bug that prevented pie charts from appearing on the Wishlist page or on My Games pages filtered by status.
+- 1.1.1: Bugfixes. Added a couple of new icons.
+- 1.1.0: Added Pie charts for game systems/consoles and ownership.
+- 1.0.1: Bugfix.
+- 1.0.0: First release.
