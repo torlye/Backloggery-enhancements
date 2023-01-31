@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tor's Backloggery enhancements
-// @version      2.1.18
+// @version      2.2.0
 // @namespace    werhi23uhkjwesda
 // @description  Adds pie charts and other enhancements to backloggery.com
 // @author       Tor

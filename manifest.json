@@ -1,7 +1,7 @@
 {
    "manifest_version": 2,
    "name": "Tor's Backloggery enhancements",
-   "version": "2.1.18",
+   "version": "",
    "description": "Adds pie charts and other enhancements to backloggery.com",
    "icons": { "128": "icon128.png",
                "48": "icon48.png" },
