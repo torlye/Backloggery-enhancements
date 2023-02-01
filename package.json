@@ -1,6 +1,6 @@
 {
   "name": "backloggery-enhancements",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Adds pie charts and other enhancements to backloggery.com",
   "main": "src/script.ts",
   "repository": {
@@ -14,28 +14,24 @@
   },
   "homepage": "https://github.com/torlye/Backloggery-enhancements#readme",
   "scripts": {
-    "watch": "npx gulp watch",
-    "build": "npx gulp build",
-    "clean": "npx gulp clean",
-    "release": "npx gulp release"
+    "build": "tsc",
+    "release": "npm run build && node scripts/release.js",
+    "test": "jest"
   },
   "dependencies": {
     "jquery": "^1.12.4"
   },
   "devDependencies": {
     "@types/greasemonkey": "^4.0.4",
+    "@types/jest": "^27.5.2",
     "@types/jquery": "^1.10.39",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
-    "del": "^6.1.1",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "gulp": "^4.0.2",
-    "gulp-header": "^2.0.9",
-    "gulp-inject-string": "^1.1.2",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.5",
     "typescript": "^4.9.5"
   },
   "engines": {

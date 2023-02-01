@@ -1,17 +1,21 @@
-/*
-* This file exists to stop vscode from complaining that the TS input and JS output
-* are using the same identifiers. Use `package.json` for compiler settings
-*/
 {
     "include": [
         "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.test.*"
     ],
     "compilerOptions": {
         "strict": true,
         "target": "es6",
         "lib": [
             "dom",
-            "es6",
+            "es6"
         ],
+        "esModuleInterop": true,
+        "outFile": "build/script.js",
+        "moduleResolution": "node",
+        "module": "amd"
     }
 }
