@@ -1,4 +1,5 @@
-import { isNonEmpty, isNonNullish } from "./utils";
+// import { isNonEmpty, isNonNullish } from "./utils";
+/// <reference path="utils.ts" />
 
 test('isNonNullish', () => {
     expect(isNonNullish(undefined)).toBe(false);

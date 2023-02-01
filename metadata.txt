@@ -4,11 +4,11 @@
 // @namespace    werhi23uhkjwesda
 // @description  <%= pkg.description %>
 // @author       <%= pkg.author %>
-// @copyright    2010+, Tor 
+// @copyright    2010+, Tor
 // @license      MIT License; http://www.opensource.org/licenses/mit-license.php
 // @match        https://backloggery.com/*
 // @match        https://www.backloggery.com/*
 // @icon         https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icon128.png
 // @grant        none
-// @require      https://code.jquery.com/jquery-1.12.4.min.js
+// @require      https://code.jquery.com/jquery-3.4.1.min.js
 // ==/UserScript==

@@ -16,6 +16,6 @@
         "esModuleInterop": true,
         "outFile": "build/script.js",
         "moduleResolution": "node",
-        "module": "amd"
+        "module": "None"
     }
 }
