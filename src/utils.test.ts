@@ -1,4 +1,3 @@
-// import { isNonEmpty, isNonNullish } from "./utils";
 /// <reference path="utils.ts" />
 
 test('isNonNullish', () => {
