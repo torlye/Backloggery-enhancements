@@ -1,29 +1,68 @@
 // ==UserScript==
 // @name         Tor's Backloggery enhancements
-// @version      2.2.0
+// @version      2.2.1
 // @namespace    werhi23uhkjwesda
 // @description  Adds pie charts and other enhancements to backloggery.com
 // @author       Tor
-// @copyright    2010+, Tor 
+// @copyright    2010+, Tor
 // @license      MIT License; http://www.opensource.org/licenses/mit-license.php
 // @match        https://backloggery.com/*
 // @match        https://www.backloggery.com/*
 // @icon         https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icon128.png
 // @grant        none
-// @require      https://code.jquery.com/jquery-1.12.4.min.js
+// @require      https://code.jquery.com/jquery-3.4.1.min.js
 // ==/UserScript==
 "use strict";
-/* This script uses icons from the "Silk" and "Diagona" icon sets, which may
-be found at http://www.famfamfam.com/lab/icons/silk/
-and http://p.yusukekamiyamane.com/
-*/
+//Variables for gathering statistics
+const downloadServiceStatistics = {};
+const yearStatistics = {};
+let downloadServiceTotalCount = 0;
+let yearTotalCount = 0;
+let gamesSum = 0;
+const systemCount = {};
+const ownershipCount = [0, 0, 0, 0, 0, 0];
+function isNonNullish(variable) {
+    if (typeof variable !== 'undefined' && variable !== null) {
+        return true;
+    }
+    return false;
+}
+function isNonEmpty(value) {
+    if (isNonNullish(value) && value !== "") {
+        return true;
+    }
+    return false;
+}
+//Enable or disable log messages in the browser's javascript console
+const enableLogging = false;
+function log(message) {
+    if (enableLogging) {
+        const now = new Date();
+        const addZero = function (d) {
+            if (d < 10)
+                d = "0" + d;
+            return d;
+        };
+        let millis = now.getMilliseconds();
+        if (millis < 10)
+            millis = "00" + millis;
+        else if (millis < 100)
+            millis = "0" + millis;
+        const displayMessage = addZero(now.getHours()) + ":" +
+            addZero(now.getMinutes()) + ":" +
+            addZero(now.getSeconds()) + ":" +
+            millis + " " + message;
+        console.log(displayMessage);
+    }
+}
+/// <reference path="state.ts" />
+/// <reference path="utils.ts" />
+/// <reference path="logging.ts" />
 /*
 Use transparent backgrounds for charts. Set to false if the text in the
 charts is hard to read.
 */
 const transparentBackgroundForCharts = true;
-//Enable or disable log messages in the browser's javascript console
-const enableLogging = false;
 /* In the pie charts, merge categories with very few games
 into an "other" category. 0.05 means that services with fewer than 5% of the
 total number of games will be put in the "other" category.
@@ -33,11 +72,236 @@ const otherThreshold = 0.04;
 // Width and height of charts.
 const chartWidth = 281;
 const chartHeight = 100;
-const ddicons = {};
-const miscIcons = {};
-const icon_urls = [];
-const systemIcons = {};
+//Creates pie chart from parameters
+function createPieChart(data, labels, colors, transparent, width, height) {
+    let pieChartUrl = "http://chart.apis.google.com/chart" +
+        "?cht=p&chs=" + width + "x" + height +
+        "&chd=t:" + data + "&chl=" + labels;
+    if (transparent)
+        pieChartUrl += "&chf=bg,s,00000000";
+    pieChartUrl += "&chco=" + colors;
+    log(pieChartUrl);
+    return pieChartUrl;
+}
+function updateStatusChart(headerSection) {
+    const img = headerSection.find("#statusChart");
+    if (img.length > 0)
+        return;
+    $('div#maincolumn > section:first > table').css('display', 'none');
+    const tableRows = $('div#maincolumn > section:first > table tr');
+    const unfinishedCount = tableRows.eq(0).children(":eq(1)").text();
+    const beatenCount = tableRows.eq(1).children(":eq(1)").text();
+    const completedCount = tableRows.eq(2).children(":eq(1)").text();
+    if (!isNonEmpty(unfinishedCount) ||
+        !isNonEmpty(beatenCount) ||
+        !isNonEmpty(completedCount) ||
+        parseInt(unfinishedCount) + parseInt(beatenCount) + parseInt(completedCount) < 1)
+        return;
+    const data = unfinishedCount + "," +
+        beatenCount + "," + completedCount;
+    const url = createPieChart(data, "Unfinished|Beaten|Completed", "990000,BDBDBD,FFCC66", transparentBackgroundForCharts, chartWidth, chartHeight);
+    log("Adding status chart");
+    const imgHtml = "<img src='" + url +
+        "' title='Status chart' " +
+        "alt='Status chart' id='statusChart' " +
+        "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
+    headerSection.append(imgHtml);
+}
+function createSystemChartUrl() {
+    let chartData = "";
+    let chartLabels = "";
+    let other = 0;
+    for (const system in systemCount) {
+        if (systemCount[system] / gamesSum > otherThreshold) {
+            chartData += 100 * systemCount[system] / gamesSum + ",";
+            chartLabels += system + "|";
+        }
+        else {
+            other += systemCount[system];
+        }
+    }
+    if (other > 0) {
+        chartData += 100 * other / gamesSum + ",";
+        chartLabels += "Other" + "|";
+    }
+    return createPieChart(chartData.substr(0, chartData.length - 1), chartLabels.substr(0, chartLabels.length - 1), "7777ff", transparentBackgroundForCharts, chartWidth, chartHeight);
+}
+function updateSystemChart(headerSection) {
+    const img = headerSection.find("#systemChart");
+    if (gamesSum < 1) {
+        img.remove();
+        return;
+    }
+    const url = createSystemChartUrl();
+    if (isNonEmpty(url)) {
+        if (img.length > 0) {
+            log("Updating system chart");
+            img.attr("src", url);
+        }
+        else {
+            log("Adding system service chart");
+            const imgHtml = "<img src='" + url +
+                "' title='System chart' " +
+                "alt='System chart' id='systemChart' " +
+                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
+            headerSection.append(imgHtml);
+        }
+    }
+}
+function createOwnershipChartUrl() {
+    const ownershipLabels = ["Owned", "Household", "Subscription", "Borrowed/Rented", "Formerly Owned", "Other"];
+    //Use chart colors similar to the ownership icons
+    const colors = ["b6b718", "fffcb5", "dec123", "7a9e9c", "9bacff", "9b89b6"];
+    let chartData = "";
+    let chartLabels = "";
+    let chartColors = "";
+    for (let i = 0; i < ownershipCount.length; i++)
+        if (ownershipCount[i] > 0) {
+            chartData += 100 * ownershipCount[i] / gamesSum + ",";
+            chartLabels += ownershipLabels[i] + "|";
+            chartColors += colors[i] + ",";
+        }
+    return createPieChart(chartData.substr(0, chartData.length - 1), chartLabels.substr(0, chartLabels.length - 1), chartColors.substr(0, chartColors.length - 1), transparentBackgroundForCharts, chartWidth, chartHeight);
+}
+function createDDserviceChartUrl() {
+    let chartData = "";
+    let chartLabels = "";
+    let other = 0;
+    for (const keyword in downloadServiceStatistics) {
+        if (downloadServiceStatistics[keyword] / downloadServiceTotalCount
+            > otherThreshold) {
+            chartData += 100 * downloadServiceStatistics[keyword]
+                / downloadServiceTotalCount + ",";
+            chartLabels += keyword + "|";
+        }
+        else {
+            other += downloadServiceStatistics[keyword];
+        }
+    }
+    if (other > 0) {
+        chartData += 100 * other / downloadServiceTotalCount + ",";
+        chartLabels += "Other" + "|";
+    }
+    return createPieChart(chartData.substr(0, chartData.length - 1), chartLabels.substr(0, chartLabels.length - 1), "11aa11", transparentBackgroundForCharts, chartWidth, chartHeight);
+}
+function updateOwnershipChart(headerSection) {
+    const img = headerSection.find("#ownershipChart");
+    if (gamesSum < 1) {
+        img.remove();
+        return;
+    }
+    const url = createOwnershipChartUrl();
+    if (isNonEmpty(url)) {
+        if (img.length > 0) {
+            log("Updating ownership chart");
+            img.attr("src", url);
+        }
+        else {
+            log("Adding ownership service chart");
+            const imgHtml = "<img src='" + url +
+                "' title='Ownership chart' " +
+                "alt='Ownership chart' id='ownershipChart' " +
+                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
+            headerSection.append(imgHtml);
+        }
+    }
+}
+function updateDDserviceChart(headerSection) {
+    const img = headerSection.find("#ddChart");
+    if (downloadServiceTotalCount < 1) {
+        img.remove();
+        return;
+    }
+    const url = createDDserviceChartUrl();
+    if (isNonEmpty(url)) {
+        if (img.length > 0) {
+            log("Updating DD service chart");
+            img.attr("src", url);
+        }
+        else {
+            log("Adding DD service chart");
+            const imgHtml = "<img src='" + url +
+                "' title='Digital distribution services chart' " +
+                "alt='Digital distribution services chart' id='ddChart' " +
+                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
+            headerSection.append(imgHtml);
+        }
+    }
+}
+function createYearChartUrl() {
+    const years = new Array();
+    let yearStatisticsIdx = 0;
+    let highestValue = 0;
+    for (const year in yearStatistics) {
+        years[yearStatisticsIdx] = year;
+        yearStatisticsIdx++;
+        if (yearStatistics[year] > highestValue)
+            highestValue = yearStatistics[year];
+    }
+    years.sort();
+    const lowestYear = parseInt(years[0]);
+    const highestYear = parseInt(years[years.length - 1]);
+    let chartDataX = "";
+    let chartDataY = "";
+    const chartLabelScaleFactor = Math.ceil((1 + highestYear - lowestYear) / 20);
+    for (let i = lowestYear; i <= highestYear; i++) {
+        if (i % chartLabelScaleFactor == 0)
+            chartDataX += i + "|";
+        else
+            chartDataX += "|";
+        if (yearStatistics[i.toString()] == null)
+            chartDataY += "0,";
+        else
+            chartDataY += 100 * yearStatistics[i.toString()] / highestValue + ",";
+    }
+    let barChartUrl = "http://chart.apis.google.com/chart" +
+        "?cht=bvs&chs=" + chartWidth * 2 + "x" + chartHeight +
+        "&chd=t:" + chartDataY.substr(0, chartDataY.length - 1) +
+        "&chxl=0:|" + chartDataX.substr(0, chartDataX.length - 1) +
+        "&chxt=x,y&chbh=a" +
+        "&chxr=1,0," + highestValue;
+    if (transparentBackgroundForCharts)
+        barChartUrl += "&chf=bg,s,00000000";
+    barChartUrl += "&chco=4D89F9";
+    log(barChartUrl);
+    return barChartUrl;
+}
+function updateYearChart(headerSection) {
+    const img = headerSection.find("#yearChart");
+    if (yearTotalCount < 2) {
+        img.remove();
+        return;
+    }
+    const url = createYearChartUrl();
+    if (isNonEmpty(url)) {
+        if (img.length > 0) {
+            log("Updating year chart");
+            img.attr("src", url);
+        }
+        else {
+            log("Adding year chart");
+            const imgHtml = "<img src='" + url +
+                "' title='Release years chart' alt='Release years chart' id='yearChart' " +
+                "width='" + chartWidth * 2 + "' height='" + chartHeight + "'/> ";
+            headerSection.append(imgHtml);
+        }
+    }
+}
+function updateCharts() {
+    log("Updating charts");
+    const headerSection = $("section").first();
+    if (headerSection.find('div#chartDiv1').length < 1)
+        headerSection.append("<div id='chartDiv1'></div>");
+    if (headerSection.find('div#chartDiv2').length < 1)
+        headerSection.append("<div id='chartDiv2'></div>");
+    updateStatusChart(headerSection.find('div#chartDiv1'));
+    updateSystemChart(headerSection.find('div#chartDiv1'));
+    updateOwnershipChart(headerSection.find('div#chartDiv1'));
+    updateDDserviceChart(headerSection.find('div#chartDiv1'));
+    updateYearChart(headerSection.find('div#chartDiv2'));
+}
 //Association between keywords and icons
+const ddicons = {};
 ddicons['gog.com'] = 0;
 ddicons['gog'] = 0;
 ddicons['steampowered.com'] = 2;
@@ -141,14 +405,8 @@ ddicons['itch.io'] = 54;
 ddicons['vive'] = 55;
 ddicons['oculus'] = 56;
 ddicons['rift'] = 56;
-//Do not count these icons in the digital distribution stores chart
-miscIcons['floppy'] = 16;
-miscIcons['disc'] = 17;
-miscIcons['cartridge'] = 18;
-miscIcons['soundtrack'] = 19;
-miscIcons['collectorsedition'] = 22;
-miscIcons['specialedition'] = 22;
 //List of URLs to icons
+const icon_urls = [];
 icon_urls[0] = "https://lh3.googleusercontent.com/-PhuK9fCqWXg/U4sbbMxLmYI/AAAAAAAABhQ/xYtsQcM6LiY/s800/gog.png";
 icon_urls[2] = "https://store.steampowered.com/favicon.ico";
 icon_urls[3] = "https://lh6.googleusercontent.com/-i1ugqfN2sM4/U4YanM5_lII/AAAAAAAABdM/RIndcc33kwo/s800/greenhouse.png";
@@ -156,7 +414,7 @@ icon_urls[4] = "https://lh3.googleusercontent.com/-LqhGwE8Uyjw/U4YcXukagxI/AAAAA
 icon_urls[5] = "https://lh5.googleusercontent.com/-wXSLqwLwihM/U4YcUesxPEI/AAAAAAAABeM/qecM551KaEc/s800/zombie-cow.png";
 icon_urls[6] = "https://lh6.googleusercontent.com/-Pc3nu4XDPyE/U4YiGtNVuyI/AAAAAAAABgc/5HFCyvMykiQ/s800/impulse.png";
 icon_urls[7] = "https://lh4.googleusercontent.com/-uzHpk1lSL34/U4YYKWxA_5I/AAAAAAAABcU/4V4aJ4p402I/s800/d2d.png";
-icon_urls[8] = "https://www.gamersgate.com/favicon.ico";
+icon_urls[8] = "https://github.com/torlye/Backloggery-enhancements/raw/master/icons/gamersgate.webp";
 icon_urls[9] = "https://lh5.googleusercontent.com/-G1BUB8sbDYM/U4Ycre-N0cI/AAAAAAAABe4/XCkQRlAKkRA/s800/amanitadesign.png";
 icon_urls[10] = "https://lh4.googleusercontent.com/-z1mzei2qLuk/U4YcMNddPaI/AAAAAAAABeE/kCOwM1d0C98/s800/taleoftales.png";
 icon_urls[11] = "https://lh5.googleusercontent.com/-ovDvrXveHKI/U4YY3pqECjI/AAAAAAAABcg/fLSfwSa4PdY/s800/bigfinish.png";
@@ -168,7 +426,7 @@ icon_urls[16] = "https://lh4.googleusercontent.com/-Fw5IgzTXS0E/U4Yee5J6qWI/AAAA
 icon_urls[17] = "https://lh6.googleusercontent.com/-fgYO_GO8n0A/U4Yee6LkbrI/AAAAAAAABfc/syry88tZqUs/s800/disc.png";
 icon_urls[18] = "https://lh3.googleusercontent.com/-iwXya8FD7AM/U4YVOp6-AvI/AAAAAAAABbk/WBMb1AgtN2c/s800/cart.png";
 icon_urls[19] = "https://lh5.googleusercontent.com/-r8C-lX0w_bI/U4YefafJe7I/AAAAAAAABfo/niNWzjrY3zk/s800/soundtrack.png";
-icon_urls[20] = "https://battle.net/static/images/meta/favicon.ico";
+icon_urls[20] = "https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icons/battlenet.png";
 icon_urls[21] = "https://lh6.googleusercontent.com/-QRWAZw-QeVI/U4YbLQRWCvI/AAAAAAAABdc/UM6aD_OC45Q/s800/xboxlive.png";
 icon_urls[22] = "https://lh6.googleusercontent.com/-VQx0m0aF2vU/U4Yee7XwMFI/AAAAAAAABfY/iQuU-QE9jJA/s800/collectors.png";
 icon_urls[23] = "https://drive.google.com/uc?id=1w1yMX9TzI4cuwvJwlBkXaXQ1IIp3BWAQSQ";
@@ -177,7 +435,7 @@ icon_urls[25] = "https://lh4.googleusercontent.com/-8k0SFFIFooQ/U4YY4QHg-fI/AAAA
 icon_urls[26] = "https://lh6.googleusercontent.com/-QBuHwtRK93I/U4YapJUfBEI/AAAAAAAABdU/MwwsXQ_3fW4/s800/yawma.png";
 icon_urls[27] = "https://humblebundle-a.akamaihd.net/static/hashed/46cf2ed85a0641bfdc052121786440c70da77d75.png";
 icon_urls[28] = "https://lh6.googleusercontent.com/-YE1_ScE2oSA/U4Yab588McI/AAAAAAAABc8/MW30tqHQTRo/s800/desura.png";
-icon_urls[29] = "https://www.beamdog.com/images/2.0/favicon.png";
+icon_urls[29] = "https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icons/beamdog.png";
 icon_urls[30] = "https://lh3.googleusercontent.com/-HwUaInJeAcM/U4YcrYrLjNI/AAAAAAAABe8/L1ks1Jtprqg/s800/casebookthegame.png";
 icon_urls[31] = "https://lh6.googleusercontent.com/-imwyJ2Luq18/U4YcZ0s4j6I/AAAAAAAABec/HL0PGHlaD0I/s800/theball.png";
 icon_urls[32] = "https://lh4.googleusercontent.com/-HrU72c5icvg/U4YalWTsVOI/AAAAAAAABdE/NvEzPCfVgpw/s800/origin.png";
@@ -204,8 +462,17 @@ icon_urls[52] = "https://lh6.googleusercontent.com/-yFqz3QiC_kA/VLJWAcx6cbI/AAAA
 icon_urls[53] = "https://lh3.googleusercontent.com/-L0Ae5fzDP9I/VLJUXP5o9RI/AAAAAAAABl8/xb9GYMwX3F0/s800/windowsstore.png";
 icon_urls[54] = "https://lh5.googleusercontent.com/-CZqVqn8d67I/VLJUWchVXyI/AAAAAAAABmE/ehhftDUkpi4/s800/itch.io.png";
 icon_urls[55] = "https://www.vive.com/static/images/favicon.ico";
-icon_urls[56] = "https://static.oculus.com/web/www_static/production/US/4a9fcf4a36ddb3b04c2a311d67ae58f39b17a5c5/baxter/baxter-0.6.9/images/meta/favicon.png";
+icon_urls[56] = "https://github.com/torlye/Backloggery-enhancements/raw/master/icons/oculus.png";
+//Do not count these icons in the digital distribution stores chart
+const miscIcons = {};
+miscIcons['floppy'] = 16;
+miscIcons['disc'] = 17;
+miscIcons['cartridge'] = 18;
+miscIcons['soundtrack'] = 19;
+miscIcons['collectorsedition'] = 22;
+miscIcons['specialedition'] = 22;
 //Icons for game systems defined by backloggery.com
+const systemIcons = {};
 systemIcons['BNet'] = "Battle.net";
 systemIcons['Bdog'] = "Beamdog";
 systemIcons['BFG'] = "BigFishGames";
@@ -223,16 +490,77 @@ systemIcons['Origin'] = "Origin";
 systemIcons['Steam'] = "Steam";
 systemIcons['UPlay'] = "UPlay";
 systemIcons['WinStr'] = "WindowsStore";
-//Variables for gathering statistics
-const downloadServiceStatistics = {};
-const yearStatistics = {};
-let downloadServiceTotalCount = 0;
-let yearTotalCount = 0;
-let gamesSum = 0;
-const systemCount = {};
-const ownershipCount = new Array(6);
-for (let i = 0; i < ownershipCount.length; i++)
-    ownershipCount[i] = 0;
+/// <reference path="utils.ts" />
+/// <reference path="state.ts" />
+/// <reference path="icons/ddicons.ts" />
+/// <reference path="icons/icon_urls.ts" />
+/// <reference path="icons/miscIcons.ts" />
+/// <reference path="icons/systemIcons.ts" />
+/// <reference path="logging.ts" />
+function createIconFromURLandTitle(url, title) {
+    return ' <span class="info"><img width="16" height="16" src="' + url +
+        '" alt="' + title + '" title="' + title + '" ' +
+        'style="margin-bottom: -1px;" /></span> ';
+}
+function appendIconNumberToNode(iconNumber, iconTitle, node) {
+    log("Appending icon " + iconNumber + " with title " + iconTitle + " to current node");
+    node.append(createIconFromURLandTitle(icon_urls[iconNumber], iconTitle));
+}
+function createIconsFromKeyWord(word, iconsNode) {
+    const keyWord = /^\[([\w\.-]+)\]$/.exec($.trim(word));
+    if (keyWord) {
+        log("Found keyword " + keyWord[1]);
+        //Try to parse keyword as download service icon
+        let iconNumber = ddicons[keyWord[1].toLowerCase()];
+        if (isNonNullish(iconNumber)) {
+            appendIconNumberToNode(iconNumber, keyWord[1], iconsNode);
+            //Increment counters for charts
+            downloadServiceTotalCount++;
+            if (!downloadServiceStatistics[keyWord[1]])
+                downloadServiceStatistics[keyWord[1]] = 1;
+            else
+                downloadServiceStatistics[keyWord[1]]++;
+            return true;
+        }
+        //Try to parse keyword as "misc" icon
+        iconNumber = miscIcons[keyWord[1].toLowerCase()];
+        if (isNonNullish(iconNumber)) {
+            appendIconNumberToNode(iconNumber, keyWord[1], iconsNode);
+            return true;
+        }
+    }
+    return false;
+}
+function addSystemIcon(system, iconsNode) {
+    if (systemIcons[system])
+        createIconsFromKeyWord("[" + systemIcons[system] + "]", iconsNode);
+}
+/// <reference path="state.ts" />
+/// <reference path="logging.ts" />
+function createYearLabelFromKeyWord(word, yearNode) {
+    const year = /^\((\d{4})\)$/.exec($.trim(word));
+    if (year) {
+        log("Appending year node " + year[0]);
+        yearNode.append(" " + year[0]);
+        //Update year statistics
+        yearTotalCount++;
+        if (!yearStatistics[year[1]])
+            yearStatistics[year[1]] = 1;
+        else
+            yearStatistics[year[1]] += 1;
+        return true;
+    }
+    return false;
+}
+/// <reference path="iconfunctions.ts" />
+/// <reference path="yearFunctions.ts" />
+/// <reference path="chartFunctions.ts" />
+/// <reference path="state.ts" />
+/// <reference path="logging.ts" />
+/* This script uses icons from the "Silk" and "Diagona" icon sets, which may
+be found at http://www.famfamfam.com/lab/icons/silk/
+and http://p.yusukekamiyamane.com/
+*/
 //Process game list on games.php page
 function gameListUpdated() {
     log("gameListUpdated starts");
@@ -345,319 +673,6 @@ function processMultitap() {
         }
         $(this).contents().get(3).textContent = words.join(" ");
     });
-}
-function createYearLabelFromKeyWord(word, yearNode) {
-    const year = /^\((\d{4})\)$/.exec($.trim(word));
-    if (year) {
-        log("Appending year node " + year[0]);
-        yearNode.append(" " + year[0]);
-        //Update year statistics
-        yearTotalCount++;
-        if (!yearStatistics[year[1]])
-            yearStatistics[year[1]] = 1;
-        else
-            yearStatistics[year[1]] += 1;
-        return true;
-    }
-    return false;
-}
-function addSystemIcon(system, iconsNode) {
-    if (systemIcons[system])
-        createIconsFromKeyWord("[" + systemIcons[system] + "]", iconsNode);
-}
-function createIconsFromKeyWord(word, iconsNode) {
-    const keyWord = /^\[([\w\.-]+)\]$/.exec($.trim(word));
-    if (keyWord) {
-        log("Found keyword " + keyWord[1]);
-        //Try to parse keyword as download service icon
-        let iconNumber = ddicons[keyWord[1].toLowerCase()];
-        if (isValid(iconNumber)) {
-            appendIconNumberToNode(iconNumber, keyWord[1], iconsNode);
-            //Increment counters for charts
-            downloadServiceTotalCount++;
-            if (!downloadServiceStatistics[keyWord[1]])
-                downloadServiceStatistics[keyWord[1]] = 1;
-            else
-                downloadServiceStatistics[keyWord[1]]++;
-            return true;
-        }
-        //Try to parse keyword as "misc" icon
-        iconNumber = miscIcons[keyWord[1].toLowerCase()];
-        if (isValid(iconNumber)) {
-            appendIconNumberToNode(iconNumber, keyWord[1], iconsNode);
-            return true;
-        }
-    }
-    return false;
-}
-function appendIconNumberToNode(iconNumber, iconTitle, node) {
-    log("Appending icon " + iconNumber + " with title " + iconTitle + " to current node");
-    node.append(createIconFromURLandTitle(icon_urls[iconNumber], iconTitle));
-}
-function createIconFromURLandTitle(url, title) {
-    return ' <span class="info"><img width="16" height="16" src="' + url +
-        '" alt="' + title + '" title="' + title + '" ' +
-        'style="margin-bottom: -1px;" /></span> ';
-}
-function updateCharts() {
-    log("Updating charts");
-    const headerSection = $("section").first();
-    if (headerSection.find('div#chartDiv1').length < 1)
-        headerSection.append("<div id='chartDiv1'></div>");
-    if (headerSection.find('div#chartDiv2').length < 1)
-        headerSection.append("<div id='chartDiv2'></div>");
-    updateStatusChart(headerSection.find('div#chartDiv1'));
-    updateSystemChart(headerSection.find('div#chartDiv1'));
-    updateOwnershipChart(headerSection.find('div#chartDiv1'));
-    updateDDserviceChart(headerSection.find('div#chartDiv1'));
-    updateYearChart(headerSection.find('div#chartDiv2'));
-}
-function updateStatusChart(headerSection) {
-    const img = headerSection.find("#statusChart");
-    if (img.length > 0)
-        return;
-    $('div#maincolumn > section:first > table').css('display', 'none');
-    const tableRows = $('div#maincolumn > section:first > table tr');
-    const unfinishedCount = tableRows.eq(0).children(":eq(1)").text();
-    const beatenCount = tableRows.eq(1).children(":eq(1)").text();
-    const completedCount = tableRows.eq(2).children(":eq(1)").text();
-    if (!isValidAndNotEmpty(unfinishedCount) ||
-        !isValidAndNotEmpty(beatenCount) ||
-        !isValidAndNotEmpty(completedCount) ||
-        parseInt(unfinishedCount) + parseInt(beatenCount) + parseInt(completedCount) < 1)
-        return;
-    const data = unfinishedCount + "," +
-        beatenCount + "," + completedCount;
-    const url = createPieChart(data, "Unfinished|Beaten|Completed", "990000,BDBDBD,FFCC66", transparentBackgroundForCharts, chartWidth, chartHeight);
-    log("Adding status chart");
-    const imgHtml = "<img src='" + url +
-        "' title='Status chart' " +
-        "alt='Status chart' id='statusChart' " +
-        "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-    headerSection.append(imgHtml);
-}
-function updateSystemChart(headerSection) {
-    const img = headerSection.find("#systemChart");
-    if (gamesSum < 1) {
-        img.remove();
-        return;
-    }
-    const url = createSystemChartUrl();
-    if (isValidAndNotEmpty(url)) {
-        if (img.length > 0) {
-            log("Updating system chart");
-            img.attr("src", url);
-        }
-        else {
-            log("Adding system service chart");
-            const imgHtml = "<img src='" + url +
-                "' title='System chart' " +
-                "alt='System chart' id='systemChart' " +
-                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
-        }
-    }
-}
-function updateOwnershipChart(headerSection) {
-    const img = headerSection.find("#ownershipChart");
-    if (gamesSum < 1) {
-        img.remove();
-        return;
-    }
-    const url = createOwnershipChartUrl();
-    if (isValidAndNotEmpty(url)) {
-        if (img.length > 0) {
-            log("Updating ownership chart");
-            img.attr("src", url);
-        }
-        else {
-            log("Adding ownership service chart");
-            const imgHtml = "<img src='" + url +
-                "' title='Ownership chart' " +
-                "alt='Ownership chart' id='ownershipChart' " +
-                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
-        }
-    }
-}
-function updateDDserviceChart(headerSection) {
-    const img = headerSection.find("#ddChart");
-    if (downloadServiceTotalCount < 1) {
-        img.remove();
-        return;
-    }
-    const url = createDDserviceChartUrl();
-    if (isValidAndNotEmpty(url)) {
-        if (img.length > 0) {
-            log("Updating DD service chart");
-            img.attr("src", url);
-        }
-        else {
-            log("Adding DD service chart");
-            const imgHtml = "<img src='" + url +
-                "' title='Digital distribution services chart' " +
-                "alt='Digital distribution services chart' id='ddChart' " +
-                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
-        }
-    }
-}
-function updateYearChart(headerSection) {
-    const img = headerSection.find("#yearChart");
-    if (yearTotalCount < 2) {
-        img.remove();
-        return;
-    }
-    const url = createYearChartUrl();
-    if (isValidAndNotEmpty(url)) {
-        if (img.length > 0) {
-            log("Updating year chart");
-            img.attr("src", url);
-        }
-        else {
-            log("Adding year chart");
-            const imgHtml = "<img src='" + url +
-                "' title='Release years chart' alt='Release years chart' id='yearChart' " +
-                "width='" + chartWidth * 2 + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
-        }
-    }
-}
-function createSystemChartUrl() {
-    let chartData = "";
-    let chartLabels = "";
-    let other = 0;
-    for (const system in systemCount) {
-        if (systemCount[system] / gamesSum > otherThreshold) {
-            chartData += 100 * systemCount[system] / gamesSum + ",";
-            chartLabels += system + "|";
-        }
-        else {
-            other += systemCount[system];
-        }
-    }
-    if (other > 0) {
-        chartData += 100 * other / gamesSum + ",";
-        chartLabels += "Other" + "|";
-    }
-    return createPieChart(chartData.substr(0, chartData.length - 1), chartLabels.substr(0, chartLabels.length - 1), "7777ff", transparentBackgroundForCharts, chartWidth, chartHeight);
-}
-function createOwnershipChartUrl() {
-    const ownershipLabels = ["Owned", "Household", "Subscription", "Borrowed/Rented", "Formerly Owned", "Other"];
-    //Use chart colors similar to the ownership icons
-    const colors = ["b6b718", "fffcb5", "dec123", "7a9e9c", "9bacff", "9b89b6"];
-    let chartData = "";
-    let chartLabels = "";
-    let chartColors = "";
-    for (let i = 0; i < ownershipCount.length; i++)
-        if (ownershipCount[i] > 0) {
-            chartData += 100 * ownershipCount[i] / gamesSum + ",";
-            chartLabels += ownershipLabels[i] + "|";
-            chartColors += colors[i] + ",";
-        }
-    return createPieChart(chartData.substr(0, chartData.length - 1), chartLabels.substr(0, chartLabels.length - 1), chartColors.substr(0, chartColors.length - 1), transparentBackgroundForCharts, chartWidth, chartHeight);
-}
-function createDDserviceChartUrl() {
-    let chartData = "";
-    let chartLabels = "";
-    let other = 0;
-    for (const keyword in downloadServiceStatistics) {
-        if (downloadServiceStatistics[keyword] / downloadServiceTotalCount
-            > otherThreshold) {
-            chartData += 100 * downloadServiceStatistics[keyword]
-                / downloadServiceTotalCount + ",";
-            chartLabels += keyword + "|";
-        }
-        else {
-            other += downloadServiceStatistics[keyword];
-        }
-    }
-    if (other > 0) {
-        chartData += 100 * other / downloadServiceTotalCount + ",";
-        chartLabels += "Other" + "|";
-    }
-    return createPieChart(chartData.substr(0, chartData.length - 1), chartLabels.substr(0, chartLabels.length - 1), "11aa11", transparentBackgroundForCharts, chartWidth, chartHeight);
-}
-function createYearChartUrl() {
-    const years = new Array();
-    let yearStatisticsIdx = 0;
-    let highestValue = 0;
-    for (const year in yearStatistics) {
-        years[yearStatisticsIdx] = year;
-        yearStatisticsIdx++;
-        if (yearStatistics[year] > highestValue)
-            highestValue = yearStatistics[year];
-    }
-    years.sort();
-    const lowestYear = parseInt(years[0]);
-    const highestYear = parseInt(years[years.length - 1]);
-    let chartDataX = "";
-    let chartDataY = "";
-    const chartLabelScaleFactor = Math.ceil((1 + highestYear - lowestYear) / 20);
-    for (let i = lowestYear; i <= highestYear; i++) {
-        if (i % chartLabelScaleFactor == 0)
-            chartDataX += i + "|";
-        else
-            chartDataX += "|";
-        if (yearStatistics[i.toString()] == null)
-            chartDataY += "0,";
-        else
-            chartDataY += 100 * yearStatistics[i.toString()] / highestValue + ",";
-    }
-    let barChartUrl = "http://chart.apis.google.com/chart" +
-        "?cht=bvs&chs=" + chartWidth * 2 + "x" + chartHeight +
-        "&chd=t:" + chartDataY.substr(0, chartDataY.length - 1) +
-        "&chxl=0:|" + chartDataX.substr(0, chartDataX.length - 1) +
-        "&chxt=x,y&chbh=a" +
-        "&chxr=1,0," + highestValue;
-    if (transparentBackgroundForCharts)
-        barChartUrl += "&chf=bg,s,00000000";
-    barChartUrl += "&chco=4D89F9";
-    log(barChartUrl);
-    return barChartUrl;
-}
-//Creates pie chart from parameters
-function createPieChart(data, labels, colors, transparent, width, height) {
-    let pieChartUrl = "http://chart.apis.google.com/chart" +
-        "?cht=p&chs=" + width + "x" + height +
-        "&chd=t:" + data + "&chl=" + labels;
-    if (transparent)
-        pieChartUrl += "&chf=bg,s,00000000";
-    pieChartUrl += "&chco=" + colors;
-    log(pieChartUrl);
-    return pieChartUrl;
-}
-function isValid(variable) {
-    if (typeof variable != 'undefined' && variable != null) {
-        return true;
-    }
-    return false;
-}
-function isValidAndNotEmpty(variable) {
-    if (isValid(variable) && variable != "") {
-        return true;
-    }
-    return false;
-}
-function log(message) {
-    if (enableLogging) {
-        const now = new Date();
-        const addZero = function (d) {
-            if (d < 10)
-                d = "0" + d;
-            return d;
-        };
-        let millis = now.getMilliseconds();
-        if (millis < 10)
-            millis = "00" + millis;
-        else if (millis < 100)
-            millis = "0" + millis;
-        const displayMessage = addZero(now.getHours()) + ":" +
-            addZero(now.getMinutes()) + ":" +
-            addZero(now.getSeconds()) + ":" +
-            millis + " " + message;
-        console.log(displayMessage);
-    }
 }
 function attachGameListEventReceiver() {
     $("div#content").bind("DOMNodeInserted", gameListUpdated);
