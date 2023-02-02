@@ -7,5 +7,5 @@ module.exports = {
       tsconfig: 'tsconfig.test.json'
     }
   },
-  testMatch: ["build/*.test.*"]
+  testRegex: "build/script\\.test\\.js"
 };
