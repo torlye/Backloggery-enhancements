@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsc",
     "release": "npm run build && node scripts/release.js",
-    "test": "jest"
+    "test": "tsc --project tsconfig.test.json && jest"
   },
   "dependencies": {
     "jquery": "^3.4.1"

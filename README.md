@@ -62,7 +62,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://lh3.googleusercontent.com/-q3n7oxCgWso/VLJUVsGuhnI/AAAAAAAABmY/iD6J0AtUpdw/s800/dotemu.png) dotemu, dotemu.com
 
-![](https://lh6.googleusercontent.com/-T6pBLW644C4/U4YaRDp7F-I/AAAAAAAABc0/tXWjiAAenZ0/s800/gamefly.png) gamefly, gamefly.com<br/> 
+![](https://lh6.googleusercontent.com/-T6pBLW644C4/U4YaRDp7F-I/AAAAAAAABc0/tXWjiAAenZ0/s800/gamefly.png) gamefly, gamefly.com<br/>
 
 ![](https://www.gamersgate.com/favicon.ico) gamersgate.com, gamersgate
 
@@ -110,11 +110,11 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://lh6.googleusercontent.com/-QRWAZw-QeVI/U4YbLQRWCvI/AAAAAAAABdc/UM6aD_OC45Q/s800/xboxlive.png) xboxlive
 
-![](https://lh6.googleusercontent.com/-QBuHwtRK93I/U4YapJUfBEI/AAAAAAAABdU/MwwsXQ_3fW4/s800/yawma.png) yawma, yawma.net 
+![](https://lh6.googleusercontent.com/-QBuHwtRK93I/U4YapJUfBEI/AAAAAAAABdU/MwwsXQ_3fW4/s800/yawma.png) yawma, yawma.net
 
 ### Self-publishing developers—stores that sell games from a single developer
 
-![](https://lh3.googleusercontent.com/-cqTpbNOc3Eo/U4YekNHEraI/AAAAAAAABf0/Uimh4LlA9fE/s800/2dboy.png) 2dboy.com, 2dboy<br/> 
+![](https://lh3.googleusercontent.com/-cqTpbNOc3Eo/U4YekNHEraI/AAAAAAAABf0/Uimh4LlA9fE/s800/2dboy.png) 2dboy.com, 2dboy<br/>
 
 ![](https://lh5.googleusercontent.com/-G1BUB8sbDYM/U4Ycre-N0cI/AAAAAAAABe4/XCkQRlAKkRA/s800/amanitadesign.png) amanita-design.net, amanitadesign
 
@@ -128,7 +128,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://lh3.googleusercontent.com/-HwUaInJeAcM/U4YcrYrLjNI/AAAAAAAABe8/L1ks1Jtprqg/s800/casebookthegame.png) casebookthegame.com, casebook
 
-![](https://lh6.googleusercontent.com/-BCOuRHWLVPU/U4YcMLRzYMI/AAAAAAAABeA/zoLcuAPTTL8/s800/crayonphysics.png) crayonphysics.com, crayonphysics 
+![](https://lh6.googleusercontent.com/-BCOuRHWLVPU/U4YcMLRzYMI/AAAAAAAABeA/zoLcuAPTTL8/s800/crayonphysics.png) crayonphysics.com, crayonphysics
 
 ![](https://lh6.googleusercontent.com/-mquB7vxjefw/U4YcrV1mJ8I/AAAAAAAABfE/N8IEKbWLgv8/s800/freebird.png) freebird, freebirdgames, freebirdgames.com
 
@@ -181,8 +181,9 @@ This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk
 
 
 ## Changes
+- 2.2.1: Fixed broken icons. Upgraded jQuery to the same version running on backloggery.com.
 - 2.2.0: (Technical) Refactored the code to TypeScript and using an npm project to build.
-- 2.1.18: Fixed support for Backloggery's new https URL. Added new icons for Oculus and Vive. Fixed a couple of broken icons. 
+- 2.1.18: Fixed support for Backloggery's new https URL. Added new icons for Oculus and Vive. Fixed a couple of broken icons.
 - 2.1.16: Added icons for Big Fish Games, DotEmu, Groupees, IndieCity, Itch.io, Nuuvem, Playism, and Windows Store. Fixed Humble Bundle icon. Added icons for several digital distribution stores that are registered as "systems" on the Backloggery site. Technical change: Removed inline jQuery.
 - 2.1.15: Updated the ownership chart to take account for the new "Household" and "Subscription" categories. Fixed GOG icon.
 - 2.1.14: Added icon for GameStop. Updated all icons to use https and have 16x16 px size to improve compatibility with greasyfork.org. Fixed icons for Impulse, Games for Windows Live, Big Finish Games.
