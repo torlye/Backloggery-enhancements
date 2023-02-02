@@ -52,7 +52,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://lh4.googleusercontent.com/-8k0SFFIFooQ/U4YY4QHg-fI/AAAAAAAABco/6yRzMjhm3BA/s800/googleplay.png) android, androidmarket, googleplay
 
-![](https://www.beamdog.com/images/2.0/favicon.png) beamdog, beamdog.com
+![](https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icons/beamdog.png) beamdog, beamdog.com
 
 ![](https://lh3.googleusercontent.com/-WTH88IRzlQA/VLJUVpYqu8I/AAAAAAAABmM/b3QZTgeeI4s/s800/bigfishgames.png) bigfish, bigfishgames, bigfishgames.com
 
@@ -62,17 +62,17 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://lh3.googleusercontent.com/-q3n7oxCgWso/VLJUVsGuhnI/AAAAAAAABmY/iD6J0AtUpdw/s800/dotemu.png) dotemu, dotemu.com
 
-![](https://lh6.googleusercontent.com/-T6pBLW644C4/U4YaRDp7F-I/AAAAAAAABc0/tXWjiAAenZ0/s800/gamefly.png) gamefly, gamefly.com<br/>
+![](https://lh6.googleusercontent.com/-T6pBLW644C4/U4YaRDp7F-I/AAAAAAAABc0/tXWjiAAenZ0/s800/gamefly.png) gamefly, gamefly.com
 
-![](https://www.gamersgate.com/favicon.ico) gamersgate.com, gamersgate
+![](https://github.com/torlye/Backloggery-enhancements/raw/master/icons/gamersgate.webp) gamersgate.com, gamersgate
 
-![](https://www.gamestop.com/favicon.ico) gamestop.com, gamestop<br/>
+![](https://www.gamestop.com/favicon.ico) gamestop.com, gamestop
 
 ![](https://drive.google.com/uc?id=1w1yMX9TzI4cuwvJwlBkXaXQ1IIp3BWAQSQ) getgames, getgamesgo
 
 ![](https://lh3.googleusercontent.com/-n3zHP5ZTEk8/U4YoNRILjFI/AAAAAAAABgs/donquTXcOI8/s800/gamesforwindows.png) gfw, gamesforwindows, gamesforwindowsmarketplace
 
-![](https://www.greenmangaming.com/static/favicon.ico) gmg, greenmangaming, greenmangaming.com<br/>
+![](https://www.greenmangaming.com/static/favicon.ico) gmg, greenmangaming, greenmangaming.com
 
 ![](https://lh3.googleusercontent.com/-PhuK9fCqWXg/U4sbbMxLmYI/AAAAAAAABhQ/xYtsQcM6LiY/s800/gog.png) gog.com, gog
 
@@ -114,13 +114,13 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ### Self-publishing developers—stores that sell games from a single developer
 
-![](https://lh3.googleusercontent.com/-cqTpbNOc3Eo/U4YekNHEraI/AAAAAAAABf0/Uimh4LlA9fE/s800/2dboy.png) 2dboy.com, 2dboy<br/>
+![](https://lh3.googleusercontent.com/-cqTpbNOc3Eo/U4YekNHEraI/AAAAAAAABf0/Uimh4LlA9fE/s800/2dboy.png) 2dboy.com, 2dboy
 
 ![](https://lh5.googleusercontent.com/-G1BUB8sbDYM/U4Ycre-N0cI/AAAAAAAABe4/XCkQRlAKkRA/s800/amanitadesign.png) amanita-design.net, amanitadesign
 
 ![](https://lh4.googleusercontent.com/-hiTvab7fNeQ/U4YVNkVzdbI/AAAAAAAABcA/9IR0d7vj5Rw/s800/areogames.png) areo.areograph.com, areogames
 
-![](https://battle.net/static/images/meta/favicon.ico) battle.net
+![](https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icons/battlenet.png) battle.net
 
 ![](https://lh5.googleusercontent.com/-ovDvrXveHKI/U4YY3pqECjI/AAAAAAAABcg/fLSfwSa4PdY/s800/bigfinish.png) bigfinishgames.com, bigfinish
 
@@ -166,7 +166,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://www.vive.com/static/images/favicon.ico) vive
 
-![](https://static.oculus.com/web/www_static/production/US/4a9fcf4a36ddb3b04c2a311d67ae58f39b17a5c5/baxter/baxter-0.6.9/images/meta/favicon.png) oculus, rift
+![](https://github.com/torlye/Backloggery-enhancements/raw/master/icons/oculus.png) oculus, rift
 
 ## Attribution
 This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk/) and ["Diagona"](http://p.yusukekamiyamane.com/) icon sets, as well as the official icons from the vairous digital distribution stores.
