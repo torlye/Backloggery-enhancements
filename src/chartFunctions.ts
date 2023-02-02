@@ -21,17 +21,19 @@ const chartHeight = 100;
 
 //Creates pie chart from parameters
 function createPieChart(data: string, labels: string, colors: string, transparent: boolean, width: number, height: number) {
-    let pieChartUrl = "http://chart.apis.google.com/chart" +
-        "?cht=p&chs=" + width + "x" + height +
-        "&chd=t:" + data + "&chl=" + labels;
+    const pieChartUrl = new URL("https://chart.apis.google.com/chart?cht=p");
+    pieChartUrl.searchParams.set('chs', width + "x" + height);
+    pieChartUrl.searchParams.set('chd', "t:" + data);
+    pieChartUrl.searchParams.set('chl', labels);
 
     if (transparent)
-        pieChartUrl += "&chf=bg,s,00000000";
+        pieChartUrl.searchParams.set('chf', 'bg,s,00000000');
 
-    pieChartUrl += "&chco=" + colors;
+    pieChartUrl.searchParams.set('chco', colors);
+    const urlString = pieChartUrl.toString();
 
-    log(pieChartUrl);
-    return pieChartUrl;
+    log(urlString);
+    return urlString;
 }
 
 function updateStatusChart(headerSection: JQuery) {

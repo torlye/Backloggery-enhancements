@@ -2,10 +2,10 @@
 
 test('createPieChart', () => {
     expect(createPieChart("", "", "", false, 0, 0))
-        .toBe("http://chart.apis.google.com/chart?cht=p&chs=0x0&chd=t:&chl=&chco=");
+        .toBe("https://chart.apis.google.com/chart?cht=p&chs=0x0&chd=t%3A&chl=&chco=");
 
     expect(createPieChart("foo bar", "label text", "color value", true, -1, 99))
-        .toBe("http://chart.apis.google.com/chart?cht=p&chs=-1x99&chd=t:foo bar&chl=label text&chf=bg,s,00000000&chco=color value");
+        .toBe("https://chart.apis.google.com/chart?cht=p&chs=-1x99&chd=t%3Afoo+bar&chl=label+text&chf=bg%2Cs%2C00000000&chco=color+value");
 });
 
 test('updateStatusChart', () => {
@@ -56,5 +56,5 @@ test('updateStatusChart', () => {
     const img = document.querySelector("#chartDiv1 img");
     expect(img).toBeTruthy();
     expect(img?.getAttribute('src'))
-        .toBe("http://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t:2,9,3&chl=Unfinished|Beaten|Completed&chf=bg,s,00000000&chco=990000,BDBDBD,FFCC66");
+        .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A2%2C9%2C3&chl=Unfinished%7CBeaten%7CCompleted&chf=bg%2Cs%2C00000000&chco=990000%2CBDBDBD%2CFFCC66");
 });
