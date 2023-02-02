@@ -24,6 +24,16 @@ manifestJson.version = pkg.version;
 Fs.writeFileSync(releasePath + 'manifest.json', JSON.stringify(manifestJson, undefined, 2), fileWriteOpts);
 console.log("Done.");
 
+const copyFile = (srcDirectory, destDirectory, fileName) =>
+    Fs.copyFileSync(srcDirectory + fileName, destDirectory + fileName);
+
+const copyFileRootToRelease = (fileName) => copyFile(rootPath, releasePath, fileName);
+
 console.log("Copying jQuery...");
-Fs.appendFileSync(releasePath + 'jquery.min.js', Fs.readFileSync(rootPath + 'node_modules/jquery/dist/jquery.min.js', 'utf8'), fileWriteOpts);
+copyFile(rootPath + 'node_modules/jquery/dist/', releasePath, 'jquery.min.js');
+console.log("Done.");
+
+console.log("Copying icons...");
+copyFileRootToRelease('icon48.png');
+copyFileRootToRelease('icon128.png');
 console.log("Done.");
