@@ -57,4 +57,10 @@ test('updateStatusChart', () => {
     expect(img).toBeTruthy();
     expect(img?.getAttribute('src'))
         .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A2%2C9%2C3&chl=Unfinished%7CBeaten%7CCompleted&chf=bg%2Cs%2C00000000&chco=990000%2CBDBDBD%2CFFCC66");
+    expect(img?.id).toBe('statusChart');
+    expect(img?.getAttribute('title')).toBe('Status chart');
+    expect(img?.getAttribute('alt')).toBe('Status chart');
+    expect(img?.getAttribute('width')).toBe(chartWidth.toString());
+    expect(img?.getAttribute('height')).toBe(chartHeight.toString());
+    expect(document.querySelector('table')?.style.display).toBe('none');
 });
