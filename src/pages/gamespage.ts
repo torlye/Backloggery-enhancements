@@ -103,7 +103,7 @@ function gameListUpdated() {
             systemCount[system]++;
 
         //Add icons for systems that really represent digital distribution stores
-        addSystemIcon(system, gameRow1);
+        addSystemIcon(system, gameRow1[0]);
 
         //Get ownership information
         if (gameRow1.find('img[title="Household"]').length > 0)
@@ -135,7 +135,7 @@ function gameListUpdated() {
             }
 
             //Create icons from keyword
-            if (createIconsFromKeyWord(word as string, gameRow1)) {
+            if (createIconsFromKeyWord(word as string, gameRow1[0])) {
                 words[i] = null;
                 continue;
             }

@@ -66,7 +66,7 @@ Most icons have several different keywords to choose from. Pick whichever one yo
 
 ![](https://github.com/torlye/Backloggery-enhancements/raw/master/icons/gamersgate.webp) gamersgate.com, gamersgate
 
-![](https://www.gamestop.com/favicon.ico) gamestop.com, gamestop
+![](https://github.com/torlye/Backloggery-enhancements/raw/master/icons/gamestop.png) gamestop.com, gamestop
 
 ![](https://drive.google.com/uc?id=1w1yMX9TzI4cuwvJwlBkXaXQ1IIp3BWAQSQ) getgames, getgamesgo
 

@@ -12,5 +12,3 @@ function createYearLabelFromKeyWord(word: string, yearNode: Element) {
     }
     return false;
 }
-
-beforeEach(resetStatistics);

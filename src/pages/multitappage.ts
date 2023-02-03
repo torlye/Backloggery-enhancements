@@ -8,7 +8,7 @@ function processMultitap() {
         $(this).append("<span class='scripticons'></span>");
         for (const i in words) {
             const word = words[i];
-            if (createIconsFromKeyWord(word as string, $(this).find("span.scripticons"))) {
+            if (createIconsFromKeyWord(word as string, $(this).find("span.scripticons")[0])) {
                 words[i] = null;
                 continue;
             }

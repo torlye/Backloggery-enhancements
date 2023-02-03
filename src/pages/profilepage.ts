@@ -18,7 +18,7 @@ function processNowPlayingList() {
                 }
             }
 
-            if (createIconsFromKeyWord(word as string, $(scriptIconsSpan))) {
+            if (createIconsFromKeyWord(word as string, scriptIconsSpan)) {
                 words[i] = null;
                 continue;
             }

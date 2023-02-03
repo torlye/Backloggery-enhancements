@@ -45,7 +45,7 @@ icon_urls[42] = "https://www.indiegala.com/favicon.ico";
 icon_urls[43] = "https://lh4.googleusercontent.com/-QxASAMDxDtY/U4YbYdMopKI/AAAAAAAABd0/aktUFbnE_Lk/s800/kickstarter.png";
 icon_urls[44] = "https://drive.google.com/uc?id=1i8bjKbIE6JfMNUanDz6-vri0HfI4ZDSI";
 icon_urls[45] = "https://lh5.googleusercontent.com/-33drwcq-8Mg/U4YbYdhNlbI/AAAAAAAABdo/o1tR4OM3SaA/s800/indiegogo.png";
-icon_urls[46] = "https://www.gamestop.com/favicon.ico";
+icon_urls[46] = "https://github.com/torlye/Backloggery-enhancements/raw/master/icons/gamestop.png";
 icon_urls[47] = "https://lh5.googleusercontent.com/-JqxT5YXGyxo/VLJUVkpErPI/AAAAAAAABmQ/IQcgSJH8iGQ/s800/groupees.png";
 icon_urls[48] = "https://lh3.googleusercontent.com/--2pe41xzPjQ/VLJUWniehmI/AAAAAAAABmA/RglbG5rP3Jk/s800/playism-games.png";
 icon_urls[49] = "https://lh3.googleusercontent.com/-WTH88IRzlQA/VLJUVpYqu8I/AAAAAAAABmM/b3QZTgeeI4s/s800/bigfishgames.png";
