@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Tor's Backloggery enhancements
-// @version      2.2.1
+// @version      2.2.2
 // @namespace    werhi23uhkjwesda
 // @description  Adds pie charts and other enhancements to backloggery.com
 // @author       Tor
@@ -14,13 +14,30 @@
 // ==/UserScript==
 "use strict";
 //Variables for gathering statistics
-const downloadServiceStatistics = {};
-const yearStatistics = {};
-let downloadServiceTotalCount = 0;
-let yearTotalCount = 0;
-let gamesSum = 0;
-const systemCount = {};
-const ownershipCount = [0, 0, 0, 0, 0, 0];
+let downloadServiceStatistics;
+let yearStatistics;
+let downloadServiceTotalCount;
+let yearTotalCount;
+let gamesSum;
+let systemCount;
+let ownershipCount;
+const resetStatistics = () => {
+    downloadServiceStatistics = {};
+    yearStatistics = {};
+    downloadServiceTotalCount = 0;
+    yearTotalCount = 0;
+    gamesSum = 0;
+    systemCount = {};
+    ownershipCount = [0, 0, 0, 0, 0, 0];
+};
+resetStatistics();
+function updateYearStatistics(year) {
+    yearTotalCount++;
+    if (!yearStatistics[year])
+        yearStatistics[year] = 1;
+    else
+        yearStatistics[year] += 1;
+}
 function isNonNullish(variable) {
     if (typeof variable !== 'undefined' && variable !== null) {
         return true;
@@ -74,14 +91,16 @@ const chartWidth = 281;
 const chartHeight = 100;
 //Creates pie chart from parameters
 function createPieChart(data, labels, colors, transparent, width, height) {
-    let pieChartUrl = "http://chart.apis.google.com/chart" +
-        "?cht=p&chs=" + width + "x" + height +
-        "&chd=t:" + data + "&chl=" + labels;
+    const pieChartUrl = new URL("https://chart.apis.google.com/chart?cht=p");
+    pieChartUrl.searchParams.set('chs', width + "x" + height);
+    pieChartUrl.searchParams.set('chd', "t:" + data);
+    pieChartUrl.searchParams.set('chl', labels);
     if (transparent)
-        pieChartUrl += "&chf=bg,s,00000000";
-    pieChartUrl += "&chco=" + colors;
-    log(pieChartUrl);
-    return pieChartUrl;
+        pieChartUrl.searchParams.set('chf', 'bg,s,00000000');
+    pieChartUrl.searchParams.set('chco', colors);
+    const urlString = pieChartUrl.toString();
+    log(urlString);
+    return urlString;
 }
 function updateStatusChart(headerSection) {
     const img = headerSection.find("#statusChart");
@@ -452,7 +471,7 @@ icon_urls[42] = "https://www.indiegala.com/favicon.ico";
 icon_urls[43] = "https://lh4.googleusercontent.com/-QxASAMDxDtY/U4YbYdMopKI/AAAAAAAABd0/aktUFbnE_Lk/s800/kickstarter.png";
 icon_urls[44] = "https://drive.google.com/uc?id=1i8bjKbIE6JfMNUanDz6-vri0HfI4ZDSI";
 icon_urls[45] = "https://lh5.googleusercontent.com/-33drwcq-8Mg/U4YbYdhNlbI/AAAAAAAABdo/o1tR4OM3SaA/s800/indiegogo.png";
-icon_urls[46] = "https://www.gamestop.com/favicon.ico";
+icon_urls[46] = "https://github.com/torlye/Backloggery-enhancements/raw/master/icons/gamestop.png";
 icon_urls[47] = "https://lh5.googleusercontent.com/-JqxT5YXGyxo/VLJUVkpErPI/AAAAAAAABmQ/IQcgSJH8iGQ/s800/groupees.png";
 icon_urls[48] = "https://lh3.googleusercontent.com/--2pe41xzPjQ/VLJUWniehmI/AAAAAAAABmA/RglbG5rP3Jk/s800/playism-games.png";
 icon_urls[49] = "https://lh3.googleusercontent.com/-WTH88IRzlQA/VLJUVpYqu8I/AAAAAAAABmM/b3QZTgeeI4s/s800/bigfishgames.png";
@@ -498,16 +517,24 @@ systemIcons['WinStr'] = "WindowsStore";
 /// <reference path="icons/systemIcons.ts" />
 /// <reference path="logging.ts" />
 function createIconFromURLandTitle(url, title) {
-    return ' <span class="info"><img width="16" height="16" src="' + url +
-        '" alt="' + title + '" title="' + title + '" ' +
-        'style="margin-bottom: -1px;" /></span> ';
+    const span = document.createElement('span');
+    span.className = 'info';
+    const img = document.createElement('img');
+    img.width = 16;
+    img.height = 16;
+    img.src = url;
+    img.alt = title;
+    img.title = title;
+    img.style.marginBottom = '-1px';
+    span.append(img);
+    return span;
 }
 function appendIconNumberToNode(iconNumber, iconTitle, node) {
     log("Appending icon " + iconNumber + " with title " + iconTitle + " to current node");
-    node.append(createIconFromURLandTitle(icon_urls[iconNumber], iconTitle));
+    node.append(' ', createIconFromURLandTitle(icon_urls[iconNumber], iconTitle), ' ');
 }
 function createIconsFromKeyWord(word, iconsNode) {
-    const keyWord = /^\[([\w\.-]+)\]$/.exec($.trim(word));
+    const keyWord = /^\[([\w.-]+)\]$/.exec($.trim(word));
     if (keyWord) {
         log("Found keyword " + keyWord[1]);
         //Try to parse keyword as download service icon
@@ -535,6 +562,12 @@ function addSystemIcon(system, iconsNode) {
     if (systemIcons[system])
         createIconsFromKeyWord("[" + systemIcons[system] + "]", iconsNode);
 }
+function createScriptIconsElement(progressDiv) {
+    const el = document.createElement('span');
+    el.className = 'scripticons';
+    progressDiv === null || progressDiv === void 0 ? void 0 : progressDiv.prepend(el);
+    return el;
+}
 /// <reference path="state.ts" />
 /// <reference path="logging.ts" />
 function createYearLabelFromKeyWord(word, yearNode) {
@@ -543,24 +576,107 @@ function createYearLabelFromKeyWord(word, yearNode) {
         log("Appending year node " + year[0]);
         yearNode.append(" " + year[0]);
         //Update year statistics
-        yearTotalCount++;
-        if (!yearStatistics[year[1]])
-            yearStatistics[year[1]] = 1;
-        else
-            yearStatistics[year[1]] += 1;
+        updateYearStatistics(year[1]);
         return true;
     }
     return false;
 }
-/// <reference path="iconfunctions.ts" />
-/// <reference path="yearFunctions.ts" />
-/// <reference path="chartFunctions.ts" />
-/// <reference path="state.ts" />
-/// <reference path="logging.ts" />
-/* This script uses icons from the "Silk" and "Diagona" icon sets, which may
-be found at http://www.famfamfam.com/lab/icons/silk/
-and http://p.yusukekamiyamane.com/
-*/
+/// <reference path="../iconfunctions.ts" />
+/// <reference path="../yearFunctions.ts" />
+//Process now playing list
+function processNowPlayingList() {
+    document.querySelectorAll("div.npgame").forEach(element => {
+        var _a, _b;
+        const progressDiv = element.querySelector('div:nth-last-child(2)');
+        const words = (_b = (_a = progressDiv === null || progressDiv === void 0 ? void 0 : progressDiv.textContent) === null || _a === void 0 ? void 0 : _a.split(" ")) !== null && _b !== void 0 ? _b : [];
+        let hasYear = false;
+        const scriptIconsSpan = createScriptIconsElement(progressDiv);
+        for (const i in words) {
+            const word = words[i];
+            if (!hasYear && (progressDiv === null || progressDiv === void 0 ? void 0 : progressDiv.previousElementSibling)) {
+                hasYear = createYearLabelFromKeyWord(word, progressDiv.previousElementSibling);
+                if (hasYear) {
+                    words[i] = null;
+                    continue;
+                }
+            }
+            if (createIconsFromKeyWord(word, scriptIconsSpan)) {
+                words[i] = null;
+                continue;
+            }
+        }
+        const progressTextElement = progressDiv === null || progressDiv === void 0 ? void 0 : progressDiv.childNodes[1];
+        if (progressTextElement)
+            progressTextElement.textContent = words.join(" ");
+    });
+}
+processNowPlayingList();
+/// <reference path="../iconfunctions.ts" />
+/// <reference path="../yearFunctions.ts" />
+/// <reference path="../chartFunctions.ts" />
+/// <reference path="../logging.ts" />
+/// <reference path="../state.ts" />
+function isLoadingAjax() {
+    return $("img[src$='AJAX_loading.gif']").length > 0;
+}
+function addActivityIndicator() {
+    let x = (window.innerWidth - 100) / 2;
+    let y = (window.innerHeight - 100) / 2;
+    $(document.body).append('<div class="loadallindicator" style="width:100px;height:100px;position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100;background-color:black;opacity:0.7"></div>');
+    x += 28;
+    y += 27;
+    $(document.body).append('<img class="loadallindicator" style="position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100" src="images/AJAX_loading.gif?foo" alt="Now Loading..." width="44" height="46" />');
+}
+function removeActivityIndicator() {
+    $('.loadallindicator').remove();
+}
+function triggerNext() {
+    const showMoreBtn = $("input[type='button'][value='Show more games']");
+    if (showMoreBtn.length > 0) {
+        log("Loading next page");
+        showMoreBtn.click();
+        setTimeout(tryLoadNext, 1000);
+        return;
+    }
+    const expandBtn = $(".lessmore[onclick]:contains('\u25BC')").first();
+    if (expandBtn.length > 0) {
+        log("Expanding collection");
+        expandBtn.click();
+        setTimeout(tryLoadNext, 1000);
+        return;
+    }
+    log("Load all done");
+    gameListUpdated();
+    removeActivityIndicator();
+}
+function tryLoadNext() {
+    $("div#content").unbind("DOMNodeInserted", tryLoadNext);
+    if (isLoadingAjax())
+        $("div#content").bind("DOMNodeInserted", tryLoadNext);
+    else
+        triggerNext();
+}
+function attachGameListEventReceiver() {
+    $("div#content").bind("DOMNodeInserted", gameListUpdated);
+}
+function detachGameListEventReceiver() {
+    $("div#content").unbind("DOMNodeInserted", gameListUpdated);
+}
+function documentContainsStuffToLoad() {
+    return ($("input[type='button'][value='Show more games']").length > 0) || ($(".lessmore[onclick]:contains('\u25BC')").length > 0);
+}
+let loadAllTriggered = false;
+$(document).keyup(function (event) {
+    if (event.which == 76 && event.shiftKey && event.ctrlKey && !isLoadingAjax()) { //Ctrl-Shift-L
+        if (!loadAllTriggered && documentContainsStuffToLoad()) {
+            log("Starting load all");
+            detachGameListEventReceiver();
+            addActivityIndicator();
+            loadAllTriggered = true;
+            tryLoadNext();
+        }
+    }
+});
 //Process game list on games.php page
 function gameListUpdated() {
     log("gameListUpdated starts");
@@ -584,7 +700,7 @@ function gameListUpdated() {
         else
             systemCount[system]++;
         //Add icons for systems that really represent digital distribution stores
-        addSystemIcon(system, gameRow1);
+        addSystemIcon(system, gameRow1[0]);
         //Get ownership information
         if (gameRow1.find('img[title="Household"]').length > 0)
             ownershipCount[1]++;
@@ -605,14 +721,14 @@ function gameListUpdated() {
             const word = words[i];
             //Get year
             if (!hasYear) {
-                hasYear = createYearLabelFromKeyWord(word, gameRow1.find("b:first"));
+                hasYear = createYearLabelFromKeyWord(word, gameRow1.find("b:first")[0]);
                 if (hasYear) {
                     words[i] = null;
                     continue;
                 }
             }
             //Create icons from keyword
-            if (createIconsFromKeyWord(word, gameRow1)) {
+            if (createIconsFromKeyWord(word, gameRow1[0])) {
                 words[i] = null;
                 continue;
             }
@@ -630,43 +746,19 @@ function gameListUpdated() {
     attachGameListEventReceiver();
     log("gameListUpdated end");
 }
-//Process now playing list
-function processNowPlayingList() {
-    $("div.npgame").each(function (index) {
-        var _a, _b;
-        const progressDiv = $(this).children().eq(-2);
-        const words = (_b = (_a = progressDiv.contents().get(0).textContent) === null || _a === void 0 ? void 0 : _a.split(" ")) !== null && _b !== void 0 ? _b : [];
-        let hasYear = false;
-        progressDiv.prepend("<span class='scripticons'></span>");
-        for (const i in words) {
-            const word = words[i];
-            if (!hasYear) {
-                hasYear = createYearLabelFromKeyWord(word, progressDiv.prev());
-                if (hasYear) {
-                    words[i] = null;
-                    continue;
-                }
-            }
-            if (createIconsFromKeyWord(word, progressDiv.find("span.scripticons"))) {
-                words[i] = null;
-                continue;
-            }
-        }
-        progressDiv.contents().get(1).textContent = words.join(" ");
-    });
-}
+gameListUpdated();
+/// <reference path="../iconfunctions.ts" />
 //Process multitap
 function processMultitap() {
-    $("div.friend li").each(function (index) {
+    $("div.friend li").each(function () {
         var _a, _b;
         if ($(this).contents().length < 4)
             return;
         const words = (_b = (_a = $(this).contents().get(3).textContent) === null || _a === void 0 ? void 0 : _a.split(" ")) !== null && _b !== void 0 ? _b : [];
-        const hasYear = false;
         $(this).append("<span class='scripticons'></span>");
         for (const i in words) {
             const word = words[i];
-            if (createIconsFromKeyWord(word, $(this).find("span.scripticons"))) {
+            if (createIconsFromKeyWord(word, $(this).find("span.scripticons")[0])) {
                 words[i] = null;
                 continue;
             }
@@ -674,67 +766,11 @@ function processMultitap() {
         $(this).contents().get(3).textContent = words.join(" ");
     });
 }
-function attachGameListEventReceiver() {
-    $("div#content").bind("DOMNodeInserted", gameListUpdated);
-}
-function detachGameListEventReceiver() {
-    $("div#content").unbind("DOMNodeInserted", gameListUpdated);
-}
-let loadAllTriggered = false;
-$(document).keyup(function (event) {
-    if (event.which == 76 && event.shiftKey && event.ctrlKey && !isLoadingAjax()) { //Ctrl-Shift-L
-        if (!loadAllTriggered && documentContainsStuffToLoad()) {
-            log("Starting load all");
-            detachGameListEventReceiver();
-            addActivityIndicator();
-            loadAllTriggered = true;
-            tryLoadNext();
-        }
-    }
-});
-function documentContainsStuffToLoad() {
-    return ($("input[type='button'][value='Show more games']").length > 0) || ($(".lessmore[onclick]:contains('\u25BC')").length > 0);
-}
-function isLoadingAjax() {
-    return $("img[src$='AJAX_loading.gif']").length > 0;
-}
-function tryLoadNext() {
-    $("div#content").unbind("DOMNodeInserted", tryLoadNext);
-    if (isLoadingAjax())
-        $("div#content").bind("DOMNodeInserted", tryLoadNext);
-    else
-        triggerNext();
-}
-function triggerNext() {
-    const showMoreBtn = $("input[type='button'][value='Show more games']");
-    if (showMoreBtn.length > 0) {
-        log("Loading next page");
-        showMoreBtn.click();
-        setTimeout(tryLoadNext, 1000);
-        return;
-    }
-    const expandBtn = $(".lessmore[onclick]:contains('\u25BC')").first();
-    if (expandBtn.length > 0) {
-        log("Expanding collection");
-        expandBtn.click();
-        setTimeout(tryLoadNext, 1000);
-        return;
-    }
-    log("Load all done");
-    gameListUpdated();
-    removeActivityIndicator();
-}
-function addActivityIndicator() {
-    let x = (window.innerWidth - 100) / 2;
-    let y = (window.innerHeight - 100) / 2;
-    $(document.body).append('<div class="loadallindicator" style="width:100px;height:100px;position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100;background-color:black;opacity:0.7"></div>');
-    x += 28;
-    y += 27;
-    $(document.body).append('<img class="loadallindicator" style="position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100" src="images/AJAX_loading.gif?foo" alt="Now Loading..." width="44" height="46" />');
-}
-function removeActivityIndicator() {
-    $('.loadallindicator').remove();
-}
-processNowPlayingList();
 processMultitap();
-gameListUpdated();
+/// <reference path="pages/profilepage.ts" />
+/// <reference path="pages/gamespage.ts" />
+/// <reference path="pages/multitappage.ts" />
+/* This script uses icons from the "Silk" and "Diagona" icon sets, which may
+be found at http://www.famfamfam.com/lab/icons/silk/
+and http://p.yusukekamiyamane.com/
+*/

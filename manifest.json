@@ -1,12 +1,11 @@
 {
-   "manifest_version": 2,
+   "manifest_version": 3,
    "name": "Tor's Backloggery enhancements",
    "version": "",
    "description": "Adds pie charts and other enhancements to backloggery.com",
    "icons": { "128": "icon128.png",
                "48": "icon48.png" },
    "author": "Tor",
-   "converted_from_user_script": true,
    "content_scripts": [ {
       "js": [ "jquery.min.js", "script.js" ],
       "matches": [ "https://backloggery.com/*", "https://www.backloggery.com/*" ],

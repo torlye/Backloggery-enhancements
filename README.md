@@ -181,6 +181,7 @@ This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk
 
 
 ## Changes
+- 2.2.2: Fixed one more broken icon. Upgraded to manifest V3 for the Chrome extension.
 - 2.2.1: Fixed broken icons. Upgraded jQuery to the same version running on backloggery.com.
 - 2.2.0: (Technical) Refactored the code to TypeScript and using an npm project to build.
 - 2.1.18: Fixed support for Backloggery's new https URL. Added new icons for Oculus and Vive. Fixed a couple of broken icons.
