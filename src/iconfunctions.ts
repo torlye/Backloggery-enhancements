@@ -50,3 +50,10 @@ function addSystemIcon(system: string, iconsNode: JQuery) {
     if (systemIcons[system])
         createIconsFromKeyWord("[" + systemIcons[system] + "]", iconsNode);
 }
+
+function createScriptIconsElement(progressDiv: Element | null) {
+    const el = document.createElement('span');
+    el.className = 'scripticons';
+    progressDiv?.prepend(el);
+    return el;
+}

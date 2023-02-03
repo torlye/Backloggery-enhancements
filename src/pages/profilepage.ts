@@ -3,27 +3,29 @@
 
 //Process now playing list
 function processNowPlayingList() {
-    $("div.npgame").each(function (this: Element) {
-        const progressDiv = $(this).children().eq(-2);
-        const words: Array<string | null> = progressDiv.contents().get(0).textContent?.split(" ") ?? [];
+    document.querySelectorAll("div.npgame").forEach(element => {
+        const progressDiv = element.querySelector('div:nth-last-child(2)');
+        const words: Array<string | null> = progressDiv?.textContent?.split(" ") ?? [];
         let hasYear = false;
-        progressDiv.prepend("<span class='scripticons'></span>");
+        const scriptIconsSpan = createScriptIconsElement(progressDiv);
         for (const i in words) {
             const word = words[i];
-            if (!hasYear) {
-                hasYear = createYearLabelFromKeyWord(word as string, progressDiv.prev());
+            if (!hasYear && progressDiv?.previousElementSibling) {
+                hasYear = createYearLabelFromKeyWord(word as string, progressDiv.previousElementSibling);
                 if (hasYear) {
                     words[i] = null;
                     continue;
                 }
             }
 
-            if (createIconsFromKeyWord(word as string, progressDiv.find("span.scripticons"))) {
+            if (createIconsFromKeyWord(word as string, $(scriptIconsSpan))) {
                 words[i] = null;
                 continue;
             }
         }
-        progressDiv.contents().get(1).textContent = words.join(" ");
+        const progressTextElement = progressDiv?.childNodes[1];
+        if (progressTextElement)
+            progressTextElement.textContent = words.join(" ");
     });
 }
 

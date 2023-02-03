@@ -1,8 +1,29 @@
 //Variables for gathering statistics
-const downloadServiceStatistics: Record<string, number> = {};
-const yearStatistics: Record<string, number> = {};
-let downloadServiceTotalCount = 0;
-let yearTotalCount = 0;
-let gamesSum = 0;
-const systemCount: Record<string, number> = {};
-const ownershipCount: number[] = [0, 0, 0, 0, 0, 0];
+let downloadServiceStatistics: Record<string, number>;
+let yearStatistics: Record<string, number>;
+let downloadServiceTotalCount: number;
+let yearTotalCount: number;
+let gamesSum: number;
+let systemCount: Record<string, number>;
+let ownershipCount: number[];
+
+const resetStatistics = () => {
+    downloadServiceStatistics = {};
+    yearStatistics = {};
+    downloadServiceTotalCount = 0;
+    yearTotalCount = 0;
+    gamesSum = 0;
+    systemCount = {};
+    ownershipCount = [0, 0, 0, 0, 0, 0];
+};
+
+resetStatistics();
+
+function updateYearStatistics(year: string) {
+    yearTotalCount++;
+    if (!yearStatistics[year])
+        yearStatistics[year] = 1;
+
+    else
+        yearStatistics[year] += 1;
+}

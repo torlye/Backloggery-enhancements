@@ -127,7 +127,7 @@ function gameListUpdated() {
 
             //Get year
             if (!hasYear) {
-                hasYear = createYearLabelFromKeyWord(word as string, gameRow1.find("b:first"));
+                hasYear = createYearLabelFromKeyWord(word as string, gameRow1.find("b:first")[0]);
                 if (hasYear) {
                     words[i] = null;
                     continue;
