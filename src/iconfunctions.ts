@@ -36,11 +36,7 @@ function createIconsFromKeyWord(word: string, iconsNode: Element) {
             appendIconNumberToNode(iconNumber, keyWord[1], iconsNode);
 
             //Increment counters for charts
-            downloadServiceTotalCount++;
-            if (!downloadServiceStatistics[keyWord[1]])
-                downloadServiceStatistics[keyWord[1]] = 1;
-            else
-                downloadServiceStatistics[keyWord[1]]++;
+            updateDownloadServiceStatistics(keyWord[1]);
             return true;
         }
 

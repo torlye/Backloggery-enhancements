@@ -28,9 +28,17 @@ function updateYearStatistics(year: string) {
         yearStatistics[year] += 1;
 }
 
-const updateSystem = (system: string) => {
+const updateSystemStatistics = (system: string) => {
     if (!systemCount[system])
         systemCount[system] = 1;
     else
         systemCount[system]++;
+};
+
+const updateDownloadServiceStatistics = (keyWord: string) => {
+    downloadServiceTotalCount++;
+    if (!downloadServiceStatistics[keyWord])
+        downloadServiceStatistics[keyWord] = 1;
+    else
+        downloadServiceStatistics[keyWord]++;
 };
