@@ -109,7 +109,7 @@ function updateSystemChart(headerSection: Element | null) {
 
     const url = createSystemChartUrl();
     if (isNonEmpty(url)) {
-        if (img !== null) {
+        if (img) {
             log("Updating system chart");
             img.setAttribute("src", url);
         } else {
@@ -177,50 +177,56 @@ function createDDserviceChartUrl() {
         "11aa11", transparentBackgroundForCharts, chartWidth, chartHeight);
 }
 
-function updateOwnershipChart(headerSection: JQuery) {
-    const img = headerSection.find("#ownershipChart");
+function updateOwnershipChart(headerSection: Element | null) {
+    const img = headerSection?.querySelector("#ownershipChart");
 
     if (gamesSum < 1) {
-        img.remove();
+        img?.remove();
         return;
     }
 
     const url = createOwnershipChartUrl();
     if (isNonEmpty(url)) {
-        if (img.length > 0) {
+        if (img) {
             log("Updating ownership chart");
-            img.attr("src", url);
+            img.setAttribute("src", url);
         } else {
             log("Adding ownership service chart");
-            const imgHtml = "<img src='" + url +
-                "' title='Ownership chart' " +
-                "alt='Ownership chart' id='ownershipChart' " +
-                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
+            const newimg = document.createElement('img');
+            newimg.src = url;
+            newimg.title = 'Ownership chart';
+            newimg.alt = 'Ownership chart';
+            newimg.id = 'ownershipChart';
+            newimg.width = chartWidth;
+            newimg.height = chartHeight;
+            headerSection?.append(newimg);
         }
     }
 }
 
-function updateDDserviceChart(headerSection: JQuery) {
-    const img = headerSection.find("#ddChart");
+function updateDDserviceChart(headerSection: Element | null) {
+    const img = headerSection?.querySelector("#ddChart");
 
     if (downloadServiceTotalCount < 1) {
-        img.remove();
+        img?.remove();
         return;
     }
 
     const url = createDDserviceChartUrl();
     if (isNonEmpty(url)) {
-        if (img.length > 0) {
+        if (img) {
             log("Updating DD service chart");
-            img.attr("src", url);
+            img.setAttribute("src", url);
         } else {
             log("Adding DD service chart");
-            const imgHtml = "<img src='" + url +
-                "' title='Digital distribution services chart' " +
-                "alt='Digital distribution services chart' id='ddChart' " +
-                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
+            const newimg = document.createElement('img');
+            newimg.src = url;
+            newimg.title = 'Digital distribution services chart';
+            newimg.alt = 'Digital distribution services chart';
+            newimg.id = 'ddChart';
+            newimg.width = chartWidth;
+            newimg.height = chartHeight;
+            headerSection?.append(newimg);
         }
     }
 }
@@ -306,7 +312,7 @@ function updateCharts() {
     const chartDiv1 = headerSection[0].querySelector('div#chartDiv1');
     updateStatusChart(chartDiv1);
     updateSystemChart(chartDiv1);
-    updateOwnershipChart(headerSection.find('div#chartDiv1'));
-    updateDDserviceChart(headerSection.find('div#chartDiv1'));
+    updateOwnershipChart(chartDiv1);
+    updateDDserviceChart(chartDiv1);
     updateYearChart(headerSection.find('div#chartDiv2'));
 }

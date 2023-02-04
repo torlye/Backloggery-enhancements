@@ -91,7 +91,7 @@ test('updateOwnershipChart', () => {
     const headerSection = document.createElement('div');
     ownershipCount = [1, 2, 3, 4, 5, 6];
     gamesSum = ownershipCount.reduce((prev, curr) => prev + curr);
-    updateOwnershipChart($(headerSection));
+    updateOwnershipChart(headerSection);
 
     const img = headerSection.querySelector('img#ownershipChart');
     expect(img).toBeTruthy();
@@ -103,7 +103,7 @@ test('updateOwnershipChart', () => {
     expect(img?.getAttribute('height')).toBe(chartHeight.toString());
 
     ownershipCount[0]++; gamesSum++;
-    updateOwnershipChart($(headerSection));
+    updateOwnershipChart(headerSection);
     expect(img?.getAttribute('src'))
         .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A9.090909090909092%2C9.090909090909092%2C13.636363636363637%2C18.181818181818183%2C22.727272727272727%2C27.272727272727273&chl=Owned%7CHousehold%7CSubscription%7CBorrowed%2FRented%7CFormerly+Owned%7COther&chf=bg%2Cs%2C00000000&chco=b6b718%2Cfffcb5%2Cdec123%2C7a9e9c%2C9bacff%2C9b89b6");
 });
@@ -112,7 +112,7 @@ test('updateDDserviceChart', () => {
     const headerSection = document.createElement('div');
     updateDownloadServiceStatistics('Steam');
     updateDownloadServiceStatistics('HumbleBundle');
-    updateDDserviceChart($(headerSection));
+    updateDDserviceChart(headerSection);
 
     const img = headerSection.querySelector('img#ddChart');
     expect(img).toBeTruthy();
@@ -125,7 +125,7 @@ test('updateDDserviceChart', () => {
 
     updateDownloadServiceStatistics('HumbleBundle');
     updateDownloadServiceStatistics('GOG');
-    updateDDserviceChart($(headerSection));
+    updateDDserviceChart(headerSection);
     expect(img?.getAttribute('src'))
         .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A25%2C50%2C25&chl=Steam%7CHumbleBundle%7CGOG&chf=bg%2Cs%2C00000000&chco=11aa11");
 });
