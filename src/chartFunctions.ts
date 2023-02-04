@@ -257,7 +257,7 @@ function createYearChartUrl() {
             chartDataX += i + "|";
         else
             chartDataX += "|";
-        if (yearStatistics[i.toString()] === null)
+        if (!isNonNullish(yearStatistics[i.toString()]))
             chartDataY += "0,";
         else
             chartDataY += 100 * yearStatistics[i.toString()] / highestValue + ",";

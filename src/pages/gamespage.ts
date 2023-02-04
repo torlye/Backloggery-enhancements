@@ -4,75 +4,81 @@
 /// <reference path="../logging.ts" />
 /// <reference path="../state.ts" />
 
-function isLoadingAjax() {
-    return $("img[src$='AJAX_loading.gif']").length > 0;
-}
+// function isLoadingAjax() {
+//     return $("img[src$='AJAX_loading.gif']").length > 0;
+// }
 
-function addActivityIndicator() {
-    let x = (window.innerWidth - 100) / 2;
-    let y = (window.innerHeight - 100) / 2;
-    $(document.body).append('<div class="loadallindicator" style="width:100px;height:100px;position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100;background-color:black;opacity:0.7"></div>');
+// function addActivityIndicator() {
+//     let x = (window.innerWidth - 100) / 2;
+//     let y = (window.innerHeight - 100) / 2;
+//     $(document.body).append('<div class="loadallindicator" style="width:100px;height:100px;position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100;background-color:black;opacity:0.7"></div>');
 
-    x += 28; y += 27;
-    $(document.body).append('<img class="loadallindicator" style="position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100" src="images/AJAX_loading.gif?foo" alt="Now Loading..." width="44" height="46" />');
-}
+//     x += 28; y += 27;
+//     $(document.body).append('<img class="loadallindicator" style="position:fixed;left:' + x + 'px;top:' + y + 'px;z-index:100" src="images/AJAX_loading.gif?foo" alt="Now Loading..." width="44" height="46" />');
+// }
 
-function removeActivityIndicator() {
-    $('.loadallindicator').remove();
-}
+// function removeActivityIndicator() {
+//     $('.loadallindicator').remove();
+// }
 
-function triggerNext() {
-    const showMoreBtn = $("input[type='button'][value='Show more games']");
-    if (showMoreBtn.length > 0) {
-        log("Loading next page");
-        showMoreBtn.click();
-        setTimeout(tryLoadNext, 1000);
-        return;
-    }
-    const expandBtn = $(".lessmore[onclick]:contains('\u25BC')").first();
-    if (expandBtn.length > 0) {
-        log("Expanding collection");
-        expandBtn.click();
-        setTimeout(tryLoadNext, 1000);
-        return;
-    }
-    log("Load all done");
-    gameListUpdated();
-    removeActivityIndicator();
-}
+// function triggerNext() {
+//     const showMoreBtn = $("input[type='button'][value='Show more games']");
+//     if (showMoreBtn.length > 0) {
+//         log("Loading next page");
+//         showMoreBtn.click();
+//         setTimeout(tryLoadNext, 1000);
+//         return;
+//     }
+//     const expandBtn = $(".lessmore[onclick]:contains('\u25BC')").first();
+//     if (expandBtn.length > 0) {
+//         log("Expanding collection");
+//         expandBtn.click();
+//         setTimeout(tryLoadNext, 1000);
+//         return;
+//     }
+//     log("Load all done");
+//     gameListUpdated();
+//     removeActivityIndicator();
+// }
 
-function tryLoadNext() {
-    $("div#content").unbind("DOMNodeInserted", tryLoadNext);
-    if (isLoadingAjax())
-        $("div#content").bind("DOMNodeInserted", tryLoadNext);
-    else
-        triggerNext();
-}
+// function tryLoadNext() {
+//     $("div#content").unbind("DOMNodeInserted", tryLoadNext);
+//     if (isLoadingAjax())
+//         $("div#content").bind("DOMNodeInserted", tryLoadNext);
+//     else
+//         triggerNext();
+// }
+
+const observer = new MutationObserver(gameListUpdated);
 
 function attachGameListEventReceiver() {
-    $("div#content").bind("DOMNodeInserted", gameListUpdated);
+    const content = document.getElementById('content');
+    if (content)
+        observer.observe(content, {
+            childList: true, subtree: true
+        });
 }
 
 function detachGameListEventReceiver() {
-    $("div#content").unbind("DOMNodeInserted", gameListUpdated);
+    observer.disconnect();
 }
 
-function documentContainsStuffToLoad() {
-    return ($("input[type='button'][value='Show more games']").length > 0) || ($(".lessmore[onclick]:contains('\u25BC')").length > 0);
-}
+// function documentContainsStuffToLoad() {
+//     return ($("input[type='button'][value='Show more games']").length > 0) || ($(".lessmore[onclick]:contains('\u25BC')").length > 0);
+// }
 
-let loadAllTriggered = false;
-$(document).keyup(function (event) {
-    if (event.which == 76 && event.shiftKey && event.ctrlKey && !isLoadingAjax()) { //Ctrl-Shift-L
-        if (!loadAllTriggered && documentContainsStuffToLoad()) {
-            log("Starting load all");
-            detachGameListEventReceiver();
-            addActivityIndicator();
-            loadAllTriggered = true;
-            tryLoadNext();
-        }
-    }
-});
+// let loadAllTriggered = false;
+// $(document).keyup(function (event) {
+//     if (event.which == 76 && event.shiftKey && event.ctrlKey && !isLoadingAjax()) { //Ctrl-Shift-L
+//         if (!loadAllTriggered && documentContainsStuffToLoad()) {
+//             log("Starting load all");
+//             detachGameListEventReceiver();
+//             addActivityIndicator();
+//             loadAllTriggered = true;
+//             tryLoadNext();
+//         }
+//     }
+// });
 
 //Process game list on games.php page
 function gameListUpdated() {
@@ -153,5 +159,3 @@ function gameListUpdated() {
     attachGameListEventReceiver();
     log("gameListUpdated end");
 }
-
-gameListUpdated();

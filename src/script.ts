@@ -6,3 +6,7 @@
 be found at http://www.famfamfam.com/lab/icons/silk/
 and http://p.yusukekamiyamane.com/
 */
+
+gameListUpdated();
+processNowPlayingList();
+// processMultitap();

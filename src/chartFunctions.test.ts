@@ -146,8 +146,8 @@ test('updateYearChart', () => {
     expect(img?.getAttribute('height')).toBe(chartHeight.toString());
 
     updateYearStatistics('1999');
-    updateYearStatistics('2001');
+    updateYearStatistics('2002');
     updateYearChart(headerSection);
     expect(img?.getAttribute('src'))
-        .toBe("https://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t%3A100%2C50%2C50&chxl=0%3A%7C1999%7C2000%7C2001&chxt=x%2Cy&chbh=a&chxr=1%2C0%2C2&chf=bg%2Cs%2C00000000&chco=4D89F9");
+        .toBe("https://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t%3A100%2C50%2C0%2C50&chxl=0%3A%7C1999%7C2000%7C2001%7C2002&chxt=x%2Cy&chbh=a&chxr=1%2C0%2C2&chf=bg%2Cs%2C00000000&chco=4D89F9");
 });
