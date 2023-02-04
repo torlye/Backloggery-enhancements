@@ -36,17 +36,20 @@ function createPieChart(data: string, labels: string, colors: string, transparen
     return urlString;
 }
 
-function updateStatusChart(headerSection: JQuery) {
-    const img = headerSection.find("#statusChart");
+function updateStatusChart(headerSection: Element | null) {
+    if (!headerSection) return;
+    const img = headerSection.querySelectorAll("#statusChart");
     if (img.length > 0)
         return;
 
-    $('div#maincolumn > section:first > table').css('display', 'none');
+    const barChart = document.querySelector('div#maincolumn > section:first-child > table') as HTMLElement | null;
+    if (!barChart) return;
+    barChart.style.display = 'none';
 
-    const tableRows = $('div#maincolumn > section:first > table tr');
-    const unfinishedCount = tableRows.eq(0).children(":eq(1)").text();
-    const beatenCount = tableRows.eq(1).children(":eq(1)").text();
-    const completedCount = tableRows.eq(2).children(":eq(1)").text();
+    const tableRows = barChart.getElementsByTagName('tr');
+    const unfinishedCount = tableRows[0]?.children[1]?.textContent;
+    const beatenCount = tableRows[1]?.children[1]?.textContent;
+    const completedCount = tableRows[2]?.children[1]?.textContent;
     if (!isNonEmpty(unfinishedCount) ||
         !isNonEmpty(beatenCount) ||
         !isNonEmpty(completedCount) ||
@@ -61,11 +64,14 @@ function updateStatusChart(headerSection: JQuery) {
         transparentBackgroundForCharts, chartWidth, chartHeight);
 
     log("Adding status chart");
-    const imgHtml = "<img src='" + url +
-        "' title='Status chart' " +
-        "alt='Status chart' id='statusChart' " +
-        "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-    headerSection.append(imgHtml);
+    const newimg = document.createElement('img');
+    newimg.src = url;
+    newimg.title = 'Status chart';
+    newimg.alt = 'Status chart';
+    newimg.id = 'statusChart';
+    newimg.width = chartWidth;
+    newimg.height = chartHeight;
+    headerSection.append(newimg);
 }
 
 function createSystemChartUrl() {
@@ -92,26 +98,30 @@ function createSystemChartUrl() {
         "7777ff", transparentBackgroundForCharts, chartWidth, chartHeight);
 }
 
-function updateSystemChart(headerSection: JQuery) {
-    const img = headerSection.find("#systemChart");
+function updateSystemChart(headerSection: Element | null) {
+    if (!headerSection) return;
+    const img = headerSection.querySelector("#systemChart");
 
     if (gamesSum < 1) {
-        img.remove();
+        img?.remove();
         return;
     }
 
     const url = createSystemChartUrl();
     if (isNonEmpty(url)) {
-        if (img.length > 0) {
+        if (img !== null) {
             log("Updating system chart");
-            img.attr("src", url);
+            img.setAttribute("src", url);
         } else {
             log("Adding system service chart");
-            const imgHtml = "<img src='" + url +
-                "' title='System chart' " +
-                "alt='System chart' id='systemChart' " +
-                "width='" + chartWidth + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
+            const newimg = document.createElement('img');
+            newimg.src = url;
+            newimg.title = 'System chart';
+            newimg.alt = 'System chart';
+            newimg.id = 'systemChart';
+            newimg.width = chartWidth;
+            newimg.height = chartHeight;
+            headerSection.append(newimg);
         }
     }
 }
@@ -293,8 +303,9 @@ function updateCharts() {
     if (headerSection.find('div#chartDiv2').length < 1)
         headerSection.append("<div id='chartDiv2'></div>");
 
-    updateStatusChart(headerSection.find('div#chartDiv1'));
-    updateSystemChart(headerSection.find('div#chartDiv1'));
+    const chartDiv1 = headerSection[0].querySelector('div#chartDiv1');
+    updateStatusChart(chartDiv1);
+    updateSystemChart(chartDiv1);
     updateOwnershipChart(headerSection.find('div#chartDiv1'));
     updateDDserviceChart(headerSection.find('div#chartDiv1'));
     updateYearChart(headerSection.find('div#chartDiv2'));

@@ -53,7 +53,7 @@ test('updateStatusChart', () => {
 </div>`;
     document.body.innerHTML = html;
 
-    updateStatusChart($(document.querySelectorAll<HTMLElement>("section div#chartDiv1")));
+    updateStatusChart(document.querySelector<HTMLElement>("section div#chartDiv1"));
     const img = document.querySelector("#chartDiv1 img");
     expect(img).toBeTruthy();
     expect(img?.getAttribute('src'))
@@ -70,7 +70,7 @@ test('updateSystemChart', () => {
     const headerSection = document.createElement('div');
     updateSystem("Android"); gamesSum++;
     updateSystem("Game Boy Advance"); gamesSum++;
-    updateSystemChart($(headerSection));
+    updateSystemChart(headerSection);
 
     const img = headerSection.querySelector('img#systemChart');
     expect(img).toBeTruthy();
@@ -82,7 +82,7 @@ test('updateSystemChart', () => {
     expect(img?.getAttribute('height')).toBe(chartHeight.toString());
 
     updateSystem("Android"); gamesSum++;
-    updateSystemChart($(headerSection));
+    updateSystemChart(headerSection);
     expect(img?.getAttribute('src'))
         .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A66.66666666666667%2C33.333333333333336&chl=Android%7CGame+Boy+Advance&chf=bg%2Cs%2C00000000&chco=7777ff");
 });

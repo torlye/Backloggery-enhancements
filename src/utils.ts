@@ -1,11 +1,11 @@
-function isNonNullish(variable: string | number | null | undefined) {
-    if (typeof variable !== 'undefined' && variable !== null) {
+function isNonNullish(value: string | number | null | undefined): value is string | number {
+    if (typeof value !== 'undefined' && value !== null) {
         return true;
     }
     return false;
 }
 
-function isNonEmpty(value: string | null | undefined) {
+function isNonEmpty(value: string | null | undefined): value is string {
     if (isNonNullish(value) && value !== "") {
         return true;
     }
