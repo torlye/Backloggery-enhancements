@@ -174,7 +174,6 @@ This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk
 
 ## Links
 - [Greasyfork page for the script](https://greasyfork.org/en/scripts/1730-tor-s-backloggery-enhancements)
-- [RSS feed for keeping up with updates of this script](http://feeds.feedburner.com/BackloggeryEnhancements)
 - [The Backloggery](http://backloggery.com/)
 - [Unofficial Backloggery Steam group](http://steamcommunity.com/groups/backloggery)
 - [Tor's Backloggery account](http://backloggery.com/tor)

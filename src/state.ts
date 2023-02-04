@@ -27,3 +27,10 @@ function updateYearStatistics(year: string) {
     else
         yearStatistics[year] += 1;
 }
+
+const updateSystem = (system: string) => {
+    if (!systemCount[system])
+        systemCount[system] = 1;
+    else
+        systemCount[system]++;
+};

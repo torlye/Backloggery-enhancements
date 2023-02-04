@@ -1,4 +1,5 @@
 /// <reference path="chartFunctions.ts" />
+/// <reference path="state.ts" />
 
 test('createPieChart', () => {
     expect(createPieChart("", "", "", false, 0, 0))
@@ -63,4 +64,25 @@ test('updateStatusChart', () => {
     expect(img?.getAttribute('width')).toBe(chartWidth.toString());
     expect(img?.getAttribute('height')).toBe(chartHeight.toString());
     expect(document.querySelector('table')?.style.display).toBe('none');
+});
+
+test('updateSystemChart', () => {
+    const headerSection = document.createElement('div');
+    updateSystem("Android"); gamesSum++;
+    updateSystem("Game Boy Advance"); gamesSum++;
+    updateSystemChart($(headerSection));
+
+    const img = headerSection.querySelector('img#systemChart');
+    expect(img).toBeTruthy();
+    expect(img?.getAttribute('src'))
+        .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A50%2C50&chl=Android%7CGame+Boy+Advance&chf=bg%2Cs%2C00000000&chco=7777ff");
+    expect(img?.getAttribute('title')).toBe('System chart');
+    expect(img?.getAttribute('alt')).toBe('System chart');
+    expect(img?.getAttribute('width')).toBe(chartWidth.toString());
+    expect(img?.getAttribute('height')).toBe(chartHeight.toString());
+
+    updateSystem("Android"); gamesSum++;
+    updateSystemChart($(headerSection));
+    expect(img?.getAttribute('src'))
+        .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A66.66666666666667%2C33.333333333333336&chl=Android%7CGame+Boy+Advance&chf=bg%2Cs%2C00000000&chco=7777ff");
 });

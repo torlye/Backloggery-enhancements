@@ -13,7 +13,7 @@ into an "other" category. 0.05 means that services with fewer than 5% of the
 total number of games will be put in the "other" category.
 This might make the chart less cluttered.
 A setting between 0.10 and 0.01 recommended. Set to 0.00 to disable. */
-const otherThreshold = 0.04
+const otherThreshold = 0.04;
 
 // Width and height of charts.
 const chartWidth = 281;

@@ -97,10 +97,7 @@ function gameListUpdated() {
         //Get system information
         const system = $.trim(gameRow1.text()).split(" ")[0];
         log("System is " + system);
-        if (!systemCount[system])
-            systemCount[system] = 1;
-        else
-            systemCount[system]++;
+        updateSystem(system);
 
         //Add icons for systems that really represent digital distribution stores
         addSystemIcon(system, gameRow1[0]);
