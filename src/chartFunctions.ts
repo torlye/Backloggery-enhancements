@@ -253,29 +253,30 @@ function createYearChartUrl() {
     const chartLabelScaleFactor = Math.ceil((1 + highestYear - lowestYear) / 20);
 
     for (let i = lowestYear; i <= highestYear; i++) {
-        if (i % chartLabelScaleFactor == 0)
+        if (i % chartLabelScaleFactor === 0)
             chartDataX += i + "|";
         else
             chartDataX += "|";
-        if (yearStatistics[i.toString()] == null)
+        if (yearStatistics[i.toString()] === null)
             chartDataY += "0,";
         else
             chartDataY += 100 * yearStatistics[i.toString()] / highestValue + ",";
     }
 
-    let barChartUrl = "http://chart.apis.google.com/chart" +
-        "?cht=bvs&chs=" + chartWidth * 2 + "x" + chartHeight +
-        "&chd=t:" + chartDataY.substr(0, chartDataY.length - 1) +
-        "&chxl=0:|" + chartDataX.substr(0, chartDataX.length - 1) +
-        "&chxt=x,y&chbh=a" +
-        "&chxr=1,0," + highestValue;
+    const barChartUrl = new URL("https://chart.apis.google.com/chart?cht=bvs");
+    barChartUrl.searchParams.set('chs', chartWidth * 2 + "x" + chartHeight);
+    barChartUrl.searchParams.set('chd', "t:" + chartDataY.substr(0, chartDataY.length - 1));
+    barChartUrl.searchParams.set('chxl', "0:|" + chartDataX.substr(0, chartDataX.length - 1));
+    barChartUrl.searchParams.set('chxt', 'x,y');
+    barChartUrl.searchParams.set('chbh', 'a');
+    barChartUrl.searchParams.set('chxr', "1,0," + highestValue);
 
     if (transparentBackgroundForCharts)
-        barChartUrl += "&chf=bg,s,00000000";
-    barChartUrl += "&chco=4D89F9";
+        barChartUrl.searchParams.set('chf', 'bg,s,00000000');
+    barChartUrl.searchParams.set('chco', '4D89F9');
 
-    log(barChartUrl);
-    return barChartUrl;
+    log(barChartUrl.toString());
+    return barChartUrl.toString();
 }
 
 function updateYearChart(headerSection: Element | null) {

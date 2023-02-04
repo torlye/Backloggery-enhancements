@@ -139,7 +139,7 @@ test('updateYearChart', () => {
     const img = headerSection.querySelector('img#yearChart');
     expect(img).toBeTruthy();
     expect(img?.getAttribute('src'))
-        .toBe("http://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t:100,100&chxl=0:|1999|2000&chxt=x,y&chbh=a&chxr=1,0,1&chf=bg,s,00000000&chco=4D89F9");
+        .toBe("https://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t%3A100%2C100&chxl=0%3A%7C1999%7C2000&chxt=x%2Cy&chbh=a&chxr=1%2C0%2C1&chf=bg%2Cs%2C00000000&chco=4D89F9");
     expect(img?.getAttribute('title')).toBe('Release years chart');
     expect(img?.getAttribute('alt')).toBe('Release years chart');
     expect(img?.getAttribute('width')).toBe((chartWidth * 2).toString());
@@ -149,5 +149,5 @@ test('updateYearChart', () => {
     updateYearStatistics('2001');
     updateYearChart(headerSection);
     expect(img?.getAttribute('src'))
-        .toBe("http://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t:100,50,50&chxl=0:|1999|2000|2001&chxt=x,y&chbh=a&chxr=1,0,2&chf=bg,s,00000000&chco=4D89F9");
+        .toBe("https://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t%3A100%2C50%2C50&chxl=0%3A%7C1999%7C2000%7C2001&chxt=x%2Cy&chbh=a&chxr=1%2C0%2C2&chf=bg%2Cs%2C00000000&chco=4D89F9");
 });
