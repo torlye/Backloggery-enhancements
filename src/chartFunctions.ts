@@ -278,25 +278,29 @@ function createYearChartUrl() {
     return barChartUrl;
 }
 
-function updateYearChart(headerSection: JQuery) {
-    const img = headerSection.find("#yearChart");
+function updateYearChart(headerSection: Element | null) {
+    const img = headerSection?.querySelector("#yearChart");
 
     if (yearTotalCount < 2) {
-        img.remove();
+        img?.remove();
         return;
     }
 
     const url = createYearChartUrl();
     if (isNonEmpty(url)) {
-        if (img.length > 0) {
+        if (img) {
             log("Updating year chart");
-            img.attr("src", url);
+            img.setAttribute("src", url);
         } else {
             log("Adding year chart");
-            const imgHtml = "<img src='" + url +
-                "' title='Release years chart' alt='Release years chart' id='yearChart' " +
-                "width='" + chartWidth * 2 + "' height='" + chartHeight + "'/> ";
-            headerSection.append(imgHtml);
+            const newimg = document.createElement('img');
+            newimg.src = url;
+            newimg.title = 'Release years chart';
+            newimg.alt = 'Release years chart';
+            newimg.id = 'yearChart';
+            newimg.width = chartWidth * 2;
+            newimg.height = chartHeight;
+            headerSection?.append(newimg);
         }
     }
 }
@@ -314,5 +318,5 @@ function updateCharts() {
     updateSystemChart(chartDiv1);
     updateOwnershipChart(chartDiv1);
     updateDDserviceChart(chartDiv1);
-    updateYearChart(headerSection.find('div#chartDiv2'));
+    updateYearChart(headerSection.find('div#chartDiv2')[0]);
 }

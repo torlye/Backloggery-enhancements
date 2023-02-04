@@ -134,7 +134,7 @@ test('updateYearChart', () => {
     const headerSection = document.createElement('div');
     updateYearStatistics('1999');
     updateYearStatistics('2000');
-    updateYearChart($(headerSection));
+    updateYearChart(headerSection);
 
     const img = headerSection.querySelector('img#yearChart');
     expect(img).toBeTruthy();
@@ -147,7 +147,7 @@ test('updateYearChart', () => {
 
     updateYearStatistics('1999');
     updateYearStatistics('2001');
-    updateYearChart($(headerSection));
+    updateYearChart(headerSection);
     expect(img?.getAttribute('src'))
         .toBe("http://chart.apis.google.com/chart?cht=bvs&chs=562x100&chd=t:100,50,50&chxl=0:|1999|2000|2001&chxt=x,y&chbh=a&chxr=1,0,2&chf=bg,s,00000000&chco=4D89F9");
 });
