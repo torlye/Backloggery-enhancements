@@ -29,10 +29,6 @@ const copyFile = (srcDirectory, destDirectory, fileName) =>
 
 const copyFileRootToRelease = (fileName) => copyFile(rootPath, releasePath, fileName);
 
-console.log("Copying jQuery...");
-copyFile(rootPath + 'node_modules/jquery/dist/', releasePath, 'jquery.min.js');
-console.log("Done.");
-
 console.log("Copying icons...");
 copyFileRootToRelease('icon48.png');
 copyFileRootToRelease('icon128.png');

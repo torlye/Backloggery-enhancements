@@ -87,6 +87,7 @@ test('gameListUpdated', async () => {
 
     gameListUpdated();
 
+    expect(document.querySelectorAll('.gamebox.processed')).toHaveLength(2);
     const row = document.querySelector('.gamebox.processed .gamerow');
     expect(row).toBeTruthy();
     expect(row?.textContent).toMatch(/^\s*PC\s+\(2008\)\s*$/);
@@ -118,7 +119,8 @@ test('gameListUpdated', async () => {
     const { waitFor } = require('@testing-library/dom');
     await waitFor(() => expect(document.getElementById('yearChart')).toBeTruthy());
 
-    /**/expect(document.getElementById('statusChart')?.getAttribute('src'))
+    expect(document.querySelectorAll('.gamebox.processed')).toHaveLength(3);
+    expect(document.getElementById('statusChart')?.getAttribute('src'))
         .toBe('https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A2%2C12%2C0&chl=Unfinished%7CBeaten%7CCompleted&chf=bg%2Cs%2C00000000&chco=990000%2CBDBDBD%2CFFCC66');
     expect(document.getElementById('systemChart')?.getAttribute('src'))
         .toBe('https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A50%2C50&chl=PC%7CPS4&chf=bg%2Cs%2C00000000&chco=7777ff');

@@ -308,16 +308,23 @@ function updateYearChart(headerSection: Element | null) {
 
 function updateCharts() {
     log("Updating charts");
-    const headerSection = $("section").first();
-    if (headerSection.find('div#chartDiv1').length < 1)
-        headerSection.append("<div id='chartDiv1'></div>");
-    if (headerSection.find('div#chartDiv2').length < 1)
-        headerSection.append("<div id='chartDiv2'></div>");
+    const headerSection = document.getElementsByTagName("section")[0];
+    let chartDiv1 = headerSection.querySelector('div#chartDiv1');
+    if (!chartDiv1) {
+        chartDiv1 = document.createElement('div');
+        chartDiv1.id = 'chartDiv1';
+        headerSection.append(chartDiv1);
+    }
+    let chartDiv2 = headerSection.querySelector('div#chartDiv2');
+    if (!chartDiv2) {
+        chartDiv2 = document.createElement('div');
+        chartDiv2.id = 'chartDiv2';
+        headerSection.append(chartDiv2);
+    }
 
-    const chartDiv1 = headerSection[0].querySelector('div#chartDiv1');
     updateStatusChart(chartDiv1);
     updateSystemChart(chartDiv1);
     updateOwnershipChart(chartDiv1);
     updateDDserviceChart(chartDiv1);
-    updateYearChart(headerSection.find('div#chartDiv2')[0]);
+    updateYearChart(chartDiv2);
 }

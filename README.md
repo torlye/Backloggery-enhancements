@@ -175,11 +175,13 @@ This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk
 ## Links
 - [Greasyfork page for the script](https://greasyfork.org/en/scripts/1730-tor-s-backloggery-enhancements)
 - [The Backloggery](http://backloggery.com/)
+- [Backloggery Patreon](https://www.patreon.com/backloggery)
 - [Unofficial Backloggery Steam group](http://steamcommunity.com/groups/backloggery)
 - [Tor's Backloggery account](http://backloggery.com/tor)
 
 
 ## Changes
+- 2.2.3: Fixed unintentional "Achievements" text appearing in the 'Now Playing' section. Removed jQuery as a dependency.
 - 2.2.2: Fixed one more broken icon. Upgraded to manifest V3 for the Chrome extension.
 - 2.2.1: Fixed broken icons. Upgraded jQuery to the same version running on backloggery.com.
 - 2.2.0: (Technical) Refactored the code to TypeScript and using an npm project to build.

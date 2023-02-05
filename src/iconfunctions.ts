@@ -26,7 +26,7 @@ function appendIconNumberToNode(iconNumber: number, iconTitle: string, node: Ele
 }
 
 function createIconsFromKeyWord(word: string, iconsNode: Element) {
-    const keyWord = /^\[([\w.-]+)\]$/.exec($.trim(word));
+    const keyWord = /^\[([\w.-]+)\]$/.exec(word.trim());
     if (keyWord) {
         log("Found keyword " + keyWord[1]);
 

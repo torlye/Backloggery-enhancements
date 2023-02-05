@@ -1,6 +1,6 @@
 {
   "name": "backloggery-enhancements",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Adds pie charts and other enhancements to backloggery.com",
   "main": "src/script.ts",
   "repository": {
@@ -18,14 +18,10 @@
     "release": "npm run build && node scripts/release.js",
     "test": "tsc --project tsconfig.test.json && jest"
   },
-  "dependencies": {
-    "jquery": "^3.4.1"
-  },
   "devDependencies": {
     "@testing-library/dom": "^8.20.0",
     "@types/greasemonkey": "^4.0.4",
     "@types/jest": "^27.5.2",
-    "@types/jquery": "3.3",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint": "^8.33.0",

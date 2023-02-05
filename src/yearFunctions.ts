@@ -2,7 +2,7 @@
 /// <reference path="logging.ts" />
 
 function createYearLabelFromKeyWord(word: string, yearNode: Element) {
-    const year = /^\((\d{4})\)$/.exec($.trim(word));
+    const year = /^\((\d{4})\)$/.exec(word.trim());
     if (year) {
         log("Appending year node " + year[0]);
         yearNode.append(" " + year[0]);

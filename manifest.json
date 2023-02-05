@@ -7,7 +7,7 @@
                "48": "icon48.png" },
    "author": "Tor",
    "content_scripts": [ {
-      "js": [ "jquery.min.js", "script.js" ],
+      "js": [ "script.js" ],
       "matches": [ "https://backloggery.com/*", "https://www.backloggery.com/*" ],
       "run_at": "document_idle"
    } ]
