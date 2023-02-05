@@ -1,4 +1,5 @@
 /// <reference path="profilepage.ts" />
+/// <reference path="../utils.ts" />
 
 test('processNowPlayingList', () => {
     const html = `<h1>Now Playing</h1>
@@ -13,6 +14,7 @@ test('processNowPlayingList', () => {
     </div>
     <div>
         [groupees] foo [playism-games.com] (2000) [bigfishgames] [dotemu] [indiecity] [nuuvem.com.br] [windowsstore] [itch.io] bar
+        <span class="info"><img src="images/ribbon_50.gif" alt="" class="drop" width="8" height="15"> <span style="right: 0px; left: auto;"><img src="images/ribbon_50.gif" alt="" class="drop" width="8" height="15"> <b>Achievements:</b> 44 / 57 (77%)<table class="achievebar"><tbody><tr><td class="b" style="width: 77%;"></td><td class="bi" style="width: 23%;"></td></tr></tbody></table></span></span>
     </div>
     <div id="nparr1" class="nparr" onclick="getNPInfo2(1)">&#x25B7;</div>
 </div>
@@ -30,6 +32,6 @@ test('processNowPlayingList', () => {
     expect(images?.[0].alt).toBe('groupees');
     expect(images?.[7].alt).toBe('itch.io');
 
-    expect(iconsSpan?.parentElement?.textContent).toMatch(/^\s*foo\s+bar\s*$/);
+    expect(iconsSpan?.parentElement && getDirectTextContent(iconsSpan.parentElement)).toMatch(/^\s*foo\s+bar\s*$/);
     expect(iconsSpan?.parentElement?.previousElementSibling?.textContent).toMatch(/^\s*Super duper game\s+\(2000\)\s*$/);
 });

@@ -1,11 +1,14 @@
 /// <reference path="../iconfunctions.ts" />
 /// <reference path="../yearFunctions.ts" />
+/// <reference path="../utils.ts" />
 
 //Process now playing list
 function processNowPlayingList() {
     document.querySelectorAll("div.npgame").forEach(element => {
         const progressDiv = element.querySelector('div:nth-last-child(2)');
-        const words: Array<string | null> = progressDiv?.textContent?.split(" ") ?? [];
+        if (!progressDiv) return;
+        const textContent = getDirectTextContent(progressDiv);
+        const words: Array<string | null> = textContent.split(" ") ?? [];
         let hasYear = false;
         const scriptIconsSpan = createScriptIconsElement(progressDiv);
         for (const i in words) {

@@ -110,7 +110,7 @@ test('gameListUpdated', async () => {
     <h2>
     <a href="games.php?user=tor&amp;console=PS4&amp;status=2"><img alt="(B)" src="images/beaten.gif" width="16" height="16"></a>
     </h2>
-    <div class="gamerow"><b>PS4</b> <img src="images/own_other.gif" alt="Ownership: Other" title="Ownership: Other" style="padding: 1px;" width="16" height="14"></div>
+    <div class="gamerow"><b>PS4</b> <span class="info"><img src="images/ribbon_50.gif" alt="" class="drop" width="8" height="15"> <span style="right: 0px; left: auto;"><img src="images/ribbon_50.gif" alt="" class="drop" width="8" height="15"> <b>Achievements:</b> 44 / 57 (77%)<table class="achievebar"><tbody><tr><td class="b" style="width: 77%;"></td><td class="bi" style="width: 23%;"></td></tr></tbody></table></span></span> <img src="images/own_other.gif" alt="Ownership: Other" title="Ownership: Other" style="padding: 1px;" width="16" height="14"></div>
     <div class="gamerow">(2014) [PSN] Foobar</div>
     <div></div>`;
     document.getElementById('output1')?.append(newsection);

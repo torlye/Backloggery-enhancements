@@ -11,3 +11,9 @@ function isNonEmpty(value: string | null | undefined): value is string {
     }
     return false;
 }
+
+const getDirectTextContent = (element: Element) =>
+    Array.from(element.childNodes).reduce(
+        (accumulator, currentValue) =>
+            accumulator + (currentValue.nodeType === Node.TEXT_NODE ? currentValue.textContent : ''),
+        '');
