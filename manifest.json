@@ -8,7 +8,7 @@
    "author": "Tor",
    "content_scripts": [ {
       "js": [ "script.js" ],
-      "matches": [ "https://backloggery.com/*", "https://www.backloggery.com/*" ],
+      "matches": [ "https://backloggery.com/*", "https://www.backloggery.com/*", "https://backloggery.club/*" ],
       "run_at": "document_idle"
    } ]
 }

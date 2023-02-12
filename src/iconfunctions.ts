@@ -55,9 +55,18 @@ function addSystemIcon(system: string, iconsNode: Element) {
         createIconsFromKeyWord("[" + systemIcons[system] + "]", iconsNode);
 }
 
-function createScriptIconsElement(progressDiv: Element | null) {
+function createScriptIconsElement(parentElement: Element | null, append?: boolean) {
+    const existingElement = parentElement?.querySelector('.scripticons');
+    if (existingElement) {
+        existingElement.childNodes.forEach(n => n.nodeType === Node.ELEMENT_NODE && n.remove());
+        return existingElement;
+    }
+
     const el = document.createElement('span');
     el.className = 'scripticons';
-    progressDiv?.prepend(el);
+    if (append)
+        parentElement?.append(el);
+    else
+        parentElement?.prepend(el);
     return el;
 }

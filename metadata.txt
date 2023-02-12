@@ -8,6 +8,7 @@
 // @license      MIT License; http://www.opensource.org/licenses/mit-license.php
 // @match        https://backloggery.com/*
 // @match        https://www.backloggery.com/*
+// @match        https://backloggery.club/*
 // @icon         https://raw.githubusercontent.com/torlye/Backloggery-enhancements/master/icon128.png
 // @grant        none
 // ==/UserScript==
