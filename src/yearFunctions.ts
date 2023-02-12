@@ -12,3 +12,16 @@ function createYearLabelFromKeyWord(word: string, parent: Element) {
     }
     return false;
 }
+
+const createYearElement = (parentElement: Element) => {
+    const existingElement = parentElement?.querySelector('.scriptyear');
+    if (existingElement) {
+        existingElement.textContent = "";
+        return existingElement;
+    }
+
+    const el = document.createElement('span');
+    el.className = 'scriptyear';
+    parentElement?.append(el);
+    return el;
+};
