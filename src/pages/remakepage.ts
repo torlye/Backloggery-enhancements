@@ -1,6 +1,7 @@
 /// <reference path="../logging.ts" />
 /// <reference path="../iconfunctions.ts" />
 /// <reference path="../yearFunctions.ts" />
+/// <reference path="../utils.ts" />
 
 const processRemakeGameItem = () => {
     unwatchRemakePage();
@@ -10,7 +11,7 @@ const processRemakeGameItem = () => {
         const progressElement = element.querySelector('.markdown');
         log("Remake page; game element " + titleElement?.textContent);
 
-        const words: Array<string | null> = progressElement?.textContent?.split(" ") ?? [];
+        const words: Array<string | null> = getDirectTextContent(progressElement).split(" ") ?? [];
         
         let hasYear = false;
         const yearElement = createYearElement(titleElement);
