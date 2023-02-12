@@ -8,16 +8,17 @@ const processRemakeGameItem = () => {
     document.querySelectorAll(".game-item").forEach(element => {
         const titleElement = element.querySelector('.title');
         const progressElement = element.querySelector('.markdown');
-        log("Remake page; game element "+titleElement?.textContent);
+        log("Remake page; game element " + titleElement?.textContent);
 
         const words: Array<string | null> = progressElement?.textContent?.split(" ") ?? [];
         
         let hasYear = false;
+        const yearElement = createYearElement(titleElement);
         const scriptIconsSpan = createScriptIconsElement(titleElement, true);
         for (const i in words) {
             const word = words[i];
-            if (!hasYear && titleElement) {
-                hasYear = createYearLabelFromKeyWord(word as string, titleElement);
+            if (!hasYear && yearElement) {
+                hasYear = createYearLabelFromKeyWord(word as string, yearElement);
                 if (hasYear) {
                     words[i] = null;
                     continue;

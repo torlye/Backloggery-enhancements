@@ -11,10 +11,11 @@ function processNowPlayingList() {
         const words: Array<string | null> = textContent.split(" ") ?? [];
         let hasYear = false;
         const scriptIconsSpan = createScriptIconsElement(progressDiv);
+        const yearElement = createYearElement(progressDiv?.previousElementSibling);
         for (const i in words) {
             const word = words[i];
-            if (!hasYear && progressDiv?.previousElementSibling) {
-                hasYear = createYearLabelFromKeyWord(word as string, progressDiv.previousElementSibling);
+            if (!hasYear && yearElement) {
+                hasYear = createYearLabelFromKeyWord(word as string, yearElement);
                 if (hasYear) {
                     words[i] = null;
                     continue;

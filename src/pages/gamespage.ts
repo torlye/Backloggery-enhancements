@@ -66,14 +66,15 @@ function gameListUpdated() {
         //Parse words
         const words: Array<string | null> = gameRow2?.textContent?.split(" ") ?? [];
         let hasYear = false;
+        const gameTitleEl = gameRow1.querySelector("b");
+        const yearElement = createYearElement(gameTitleEl);
         for (const i in words) {
             const word = words[i];
 
             //Get year
             if (!hasYear) {
-                const gameTitleEl = gameRow1.querySelector("b");
-                if (gameTitleEl)
-                    hasYear = createYearLabelFromKeyWord(word as string, gameTitleEl);
+                if (yearElement)
+                    hasYear = createYearLabelFromKeyWord(word as string, yearElement);
                 if (hasYear) {
                     words[i] = null;
                     continue;
