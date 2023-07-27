@@ -1,18 +1,18 @@
-/// <reference path="../logging.ts" />
-/// <reference path="../iconfunctions.ts" />
-/// <reference path="../yearFunctions.ts" />
-/// <reference path="../utils.ts" />
+import { createIconsFromKeyWord, createScriptIconsElement } from "../iconfunctions";
+import { log } from "../logging";
+import { getDirectTextContent } from "../utils";
+import { createYearElement, createYearLabelFromKeyWord } from "../yearFunctions";
 
-const processRemakeGameItem = () => {
+export const processRemakeGameItem = () => {
     unwatchRemakePage();
-    
+
     document.querySelectorAll(".game-item").forEach(element => {
         const titleElement = element.querySelector('.title');
         const progressElement = element.querySelector('.markdown');
         log("Remake page; game element " + titleElement?.textContent);
 
         const words: Array<string | null> = getDirectTextContent(progressElement).split(" ") ?? [];
-        
+
         let hasYear = false;
         const yearElement = createYearElement(titleElement);
         const scriptIconsSpan = createScriptIconsElement(titleElement, true);
@@ -43,7 +43,7 @@ const processRemakeGameItem = () => {
 
 const observerRemakePage = new MutationObserver(processRemakeGameItem);
 
-const watchRemakePage = () => {
+export const watchRemakePage = () => {
     const appElement = document.getElementById('app');
     if (appElement)
         observerRemakePage.observe(appElement, {

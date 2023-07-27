@@ -1,9 +1,9 @@
-/// <reference path="../iconfunctions.ts" />
-/// <reference path="../yearFunctions.ts" />
-/// <reference path="../utils.ts" />
+import { createIconsFromKeyWord, createScriptIconsElement } from "../iconfunctions";
+import { getDirectTextContent } from "../utils";
+import { createYearElement, createYearLabelFromKeyWord } from "../yearFunctions";
 
 //Process now playing list
-function processNowPlayingList() {
+export function processNowPlayingList() {
     document.querySelectorAll("div.npgame").forEach(element => {
         const progressDiv = element.querySelector('div:nth-last-child(2)');
         if (!progressDiv) return;

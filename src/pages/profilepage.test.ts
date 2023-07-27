@@ -1,5 +1,5 @@
-/// <reference path="profilepage.ts" />
-/// <reference path="../utils.ts" />
+import { getDirectTextContent } from "../utils";
+import { processNowPlayingList } from "./profilepage";
 
 test('processNowPlayingList', () => {
     const html = `<h1>Now Playing</h1>

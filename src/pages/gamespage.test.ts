@@ -1,4 +1,4 @@
-/// <reference path="gamespage.ts" />
+import { gameListUpdated } from "./gamespage";
 
 test('gameListUpdated', async () => {
     const html = `

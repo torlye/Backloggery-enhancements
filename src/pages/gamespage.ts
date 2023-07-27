@@ -1,8 +1,8 @@
-/// <reference path="../iconfunctions.ts" />
-/// <reference path="../yearFunctions.ts" />
-/// <reference path="../chartFunctions.ts" />
-/// <reference path="../logging.ts" />
-/// <reference path="../state.ts" />
+import { updateCharts } from "../chartFunctions";
+import { addSystemIcon, createIconsFromKeyWord } from "../iconfunctions";
+import { enableLogging, log } from "../logging";
+import { getOwnershipCount, incrementGamesSum, updateSystemStatistics } from "../state";
+import { createYearLabelFromKeyWord, createYearElement } from "../yearFunctions";
 
 const observer = new MutationObserver(gameListUpdated);
 
@@ -19,7 +19,7 @@ function detachGameListEventReceiver() {
 }
 
 //Process game list on games.php page
-function gameListUpdated() {
+export function gameListUpdated() {
     log("gameListUpdated starts");
     detachGameListEventReceiver();
 
@@ -37,7 +37,7 @@ function gameListUpdated() {
 
         const gameRows = element.querySelectorAll("div.gamerow");
         const gameRow1 = gameRows[0];
-        const gameRow2: Element|undefined = gameRows[1];
+        const gameRow2: Element | undefined = gameRows[1];
 
         //Get system information
         const system = gameRow1.textContent?.trim().split(" ")[0];
@@ -51,17 +51,17 @@ function gameListUpdated() {
 
         //Get ownership information
         if (gameRow1.querySelector('img[title="Household"]'))
-            ownershipCount[1]++;
+            getOwnershipCount()[1]++;
         else if (gameRow1.querySelector('img[title="Subscription"]'))
-            ownershipCount[2]++;
+            getOwnershipCount()[2]++;
         else if (gameRow1.querySelector('img[title="Borrowed/Rented"]'))
-            ownershipCount[3]++;
+            getOwnershipCount()[3]++;
         else if (gameRow1.querySelector('img[title="Formerly Owned"]'))
-            ownershipCount[4]++;
+            getOwnershipCount()[4]++;
         else if (gameRow1.querySelector('img[title="Ownership: Other"]'))
-            ownershipCount[5]++;
+            getOwnershipCount()[5]++;
         else
-            ownershipCount[0]++;
+            getOwnershipCount()[0]++;
 
         //Parse words
         const words: Array<string | null> = gameRow2?.textContent?.split(" ") ?? [];
@@ -95,7 +95,7 @@ function gameListUpdated() {
 
         element.classList.add("processed");
         gameboxesProcessed++;
-        gamesSum++;
+        incrementGamesSum();
     });
 
     if (gameboxesProcessed > 0) {

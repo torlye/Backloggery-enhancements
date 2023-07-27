@@ -1,10 +1,10 @@
-/// <reference path="utils.ts" />
-/// <reference path="state.ts" />
-/// <reference path="icons/ddicons.ts" />
-/// <reference path="icons/icon_urls.ts" />
-/// <reference path="icons/miscIcons.ts" />
-/// <reference path="icons/systemIcons.ts" />
-/// <reference path="logging.ts" />
+import { ddicons } from "./icons/ddicons";
+import { icon_urls } from "./icons/icon_urls";
+import { miscIcons } from "./icons/miscIcons";
+import { systemIcons } from "./icons/systemIcons";
+import { log } from "./logging";
+import { updateDownloadServiceStatistics } from "./state";
+import { isNonNullish } from "./utils";
 
 function createIconFromURLandTitle(url: string, title: string) {
     const span = document.createElement('span');
@@ -25,7 +25,7 @@ function appendIconNumberToNode(iconNumber: number, iconTitle: string, node: Ele
     node.append(' ', createIconFromURLandTitle(icon_urls[iconNumber], iconTitle), ' ');
 }
 
-function createIconsFromKeyWord(word: string, iconsNode: Element) {
+export function createIconsFromKeyWord(word: string, iconsNode: Element) {
     const keyWord = /^\[([\w.-]+)\]$/.exec(word.trim());
     if (keyWord) {
         log("Found keyword " + keyWord[1]);
@@ -50,12 +50,12 @@ function createIconsFromKeyWord(word: string, iconsNode: Element) {
     return false;
 }
 
-function addSystemIcon(system: string, iconsNode: Element) {
+export function addSystemIcon(system: string, iconsNode: Element) {
     if (systemIcons[system])
         createIconsFromKeyWord("[" + systemIcons[system] + "]", iconsNode);
 }
 
-function createScriptIconsElement(parentElement: Element | null, append?: boolean) {
+export function createScriptIconsElement(parentElement: Element | null, append?: boolean) {
     const existingElement = parentElement?.querySelector('.scripticons');
     if (existingElement) {
         existingElement.childNodes.forEach(n => n.nodeType === Node.ELEMENT_NODE && n.remove());

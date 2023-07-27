@@ -1,7 +1,7 @@
 //Enable or disable log messages in the browser's javascript console
-const enableLogging = false;
+export const enableLogging = false;
 
-function log(message: string) {
+export function log(message: string) {
     if (enableLogging) {
         const now = new Date();
         const addZero = function (d: number | string) {

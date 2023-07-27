@@ -1,5 +1,4 @@
-/// <reference path="remakepage.ts" />
-/// <reference path="../utils.ts" />
+import { processRemakeGameItem } from './remakepage';
 
 test('processRemakeGameItem', () => {
     const html = `
@@ -24,6 +23,4 @@ test('processRemakeGameItem', () => {
 
     const titleElement = document.querySelector(".title");
     expect(titleElement).toHaveTextContent("Lego Star Wars: The Skywalker Saga (2022)");
-    // expect(iconsSpan?.parentElement && getDirectTextContent(iconsSpan.parentElement)).toMatch(/^\s*foo\s+bar\s*$/);
-    // expect(iconsSpan?.parentElement?.previousElementSibling?.textContent).toMatch(/^\s*Super duper game\s+\(2000\)\s*$/);
 });

@@ -1,5 +1,5 @@
 //List of URLs to icons
-const icon_urls: string[] = [];
+export const icon_urls: string[] = [];
 icon_urls[0] = "https://lh3.googleusercontent.com/-PhuK9fCqWXg/U4sbbMxLmYI/AAAAAAAABhQ/xYtsQcM6LiY/s800/gog.png";
 icon_urls[2] = "https://store.steampowered.com/favicon.ico";
 icon_urls[3] = "https://lh6.googleusercontent.com/-i1ugqfN2sM4/U4YanM5_lII/AAAAAAAABdM/RIndcc33kwo/s800/greenhouse.png";
