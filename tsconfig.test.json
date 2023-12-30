@@ -2,9 +2,12 @@
     "extends": "./tsconfig.json",
     "exclude": [
         "node_modules",
-        "src/script.ts"
     ],
     "compilerOptions": {
-        "outFile": "build/script.test.js",
+        "outDir": "build",
+        "esModuleInterop": true,
+        "moduleResolution": "nodenext",
+        "module": "nodenext",
+        "allowJs": true
     }
 }

@@ -1,5 +1,5 @@
 //Icons for game systems defined by backloggery.com
-const systemIcons: Record<string, string> = {};
+export const systemIcons: Record<string, string> = {};
 systemIcons['BNet'] = "Battle.net";
 systemIcons['Bdog'] = "Beamdog";
 systemIcons['BFG'] = "BigFishGames";

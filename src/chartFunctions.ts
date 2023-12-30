@@ -1,6 +1,6 @@
-/// <reference path="state.ts" />
-/// <reference path="utils.ts" />
-/// <reference path="logging.ts" />
+import { log } from "./logging";
+import { getDownloadServiceStatistics, getDownloadServiceTotalCount, getGamesSum, getOwnershipCount, getSystemCount, getYearStatistics, getYearTotalCount } from "./state";
+import { isNonEmpty, isNonNullish } from "./utils";
 
 /*
 Use transparent backgrounds for charts. Set to false if the text in the
@@ -16,11 +16,11 @@ A setting between 0.10 and 0.01 recommended. Set to 0.00 to disable. */
 const otherThreshold = 0.04;
 
 // Width and height of charts.
-const chartWidth = 281;
-const chartHeight = 100;
+export const chartWidth = 281;
+export const chartHeight = 100;
 
 //Creates pie chart from parameters
-function createPieChart(data: string, labels: string, colors: string, transparent: boolean, width: number, height: number) {
+export function createPieChart(data: string, labels: string, colors: string, transparent: boolean, width: number, height: number) {
     const pieChartUrl = new URL("https://chart.apis.google.com/chart?cht=p");
     pieChartUrl.searchParams.set('chs', width + "x" + height);
     pieChartUrl.searchParams.set('chd', "t:" + data);
@@ -36,7 +36,7 @@ function createPieChart(data: string, labels: string, colors: string, transparen
     return urlString;
 }
 
-function updateStatusChart(headerSection: Element | null) {
+export function updateStatusChart(headerSection: Element | null) {
     if (!headerSection) return;
     const img = headerSection.querySelectorAll("#statusChart");
     if (img.length > 0)
@@ -79,16 +79,16 @@ function createSystemChartUrl() {
     let chartLabels = "";
     let other = 0;
 
-    for (const system in systemCount) {
-        if (systemCount[system] / gamesSum > otherThreshold) {
-            chartData += 100 * systemCount[system] / gamesSum + ",";
+    for (const system in getSystemCount()) {
+        if (getSystemCount()[system] / getGamesSum() > otherThreshold) {
+            chartData += 100 * getSystemCount()[system] / getGamesSum() + ",";
             chartLabels += system + "|";
         } else {
-            other += systemCount[system];
+            other += getSystemCount()[system];
         }
     }
     if (other > 0) {
-        chartData += 100 * other / gamesSum + ",";
+        chartData += 100 * other / getGamesSum() + ",";
         chartLabels += "Other" + "|";
     }
 
@@ -98,11 +98,11 @@ function createSystemChartUrl() {
         "7777ff", transparentBackgroundForCharts, chartWidth, chartHeight);
 }
 
-function updateSystemChart(headerSection: Element | null) {
+export function updateSystemChart(headerSection: Element | null) {
     if (!headerSection) return;
     const img = headerSection.querySelector("#systemChart");
 
-    if (gamesSum < 1) {
+    if (getGamesSum() < 1) {
         img?.remove();
         return;
     }
@@ -136,9 +136,9 @@ function createOwnershipChartUrl() {
     let chartLabels = "";
     let chartColors = "";
 
-    for (let i = 0; i < ownershipCount.length; i++)
-        if (ownershipCount[i] > 0) {
-            chartData += 100 * ownershipCount[i] / gamesSum + ",";
+    for (let i = 0; i < getOwnershipCount().length; i++)
+        if (getOwnershipCount()[i] > 0) {
+            chartData += 100 * getOwnershipCount()[i] / getGamesSum() + ",";
             chartLabels += ownershipLabels[i] + "|";
             chartColors += colors[i] + ",";
         }
@@ -155,19 +155,19 @@ function createDDserviceChartUrl() {
     let chartLabels = "";
     let other = 0;
 
-    for (const keyword in downloadServiceStatistics) {
-        if (downloadServiceStatistics[keyword] / downloadServiceTotalCount
+    for (const keyword in getDownloadServiceStatistics()) {
+        if (getDownloadServiceStatistics()[keyword] / getDownloadServiceTotalCount()
             > otherThreshold) {
-            chartData += 100 * downloadServiceStatistics[keyword]
-                / downloadServiceTotalCount + ",";
+            chartData += 100 * getDownloadServiceStatistics()[keyword]
+                / getDownloadServiceTotalCount() + ",";
             chartLabels += keyword + "|";
         } else {
-            other += downloadServiceStatistics[keyword];
+            other += getDownloadServiceStatistics()[keyword];
         }
     }
 
     if (other > 0) {
-        chartData += 100 * other / downloadServiceTotalCount + ",";
+        chartData += 100 * other / getDownloadServiceTotalCount() + ",";
         chartLabels += "Other" + "|";
     }
 
@@ -177,10 +177,10 @@ function createDDserviceChartUrl() {
         "11aa11", transparentBackgroundForCharts, chartWidth, chartHeight);
 }
 
-function updateOwnershipChart(headerSection: Element | null) {
+export function updateOwnershipChart(headerSection: Element | null) {
     const img = headerSection?.querySelector("#ownershipChart");
 
-    if (gamesSum < 1) {
+    if (getGamesSum() < 1) {
         img?.remove();
         return;
     }
@@ -204,10 +204,10 @@ function updateOwnershipChart(headerSection: Element | null) {
     }
 }
 
-function updateDDserviceChart(headerSection: Element | null) {
+export function updateDDserviceChart(headerSection: Element | null) {
     const img = headerSection?.querySelector("#ddChart");
 
-    if (downloadServiceTotalCount < 1) {
+    if (getDownloadServiceTotalCount() < 1) {
         img?.remove();
         return;
     }
@@ -236,11 +236,11 @@ function createYearChartUrl() {
     let yearStatisticsIdx = 0;
     let highestValue = 0;
 
-    for (const year in yearStatistics) {
+    for (const year in getYearStatistics()) {
         years[yearStatisticsIdx] = year;
         yearStatisticsIdx++;
-        if (yearStatistics[year] > highestValue)
-            highestValue = yearStatistics[year];
+        if (getYearStatistics()[year] > highestValue)
+            highestValue = getYearStatistics()[year];
     }
     years.sort();
 
@@ -257,10 +257,10 @@ function createYearChartUrl() {
             chartDataX += i + "|";
         else
             chartDataX += "|";
-        if (!isNonNullish(yearStatistics[i.toString()]))
+        if (!isNonNullish(getYearStatistics()[i.toString()]))
             chartDataY += "0,";
         else
-            chartDataY += 100 * yearStatistics[i.toString()] / highestValue + ",";
+            chartDataY += 100 * getYearStatistics()[i.toString()] / highestValue + ",";
     }
 
     const barChartUrl = new URL("https://chart.apis.google.com/chart?cht=bvs");
@@ -279,10 +279,10 @@ function createYearChartUrl() {
     return barChartUrl.toString();
 }
 
-function updateYearChart(headerSection: Element | null) {
+export function updateYearChart(headerSection: Element | null) {
     const img = headerSection?.querySelector("#yearChart");
 
-    if (yearTotalCount < 2) {
+    if (getYearTotalCount() < 2) {
         img?.remove();
         return;
     }
@@ -306,7 +306,7 @@ function updateYearChart(headerSection: Element | null) {
     }
 }
 
-function updateCharts() {
+export function updateCharts() {
     log("Updating charts");
     const headerSection = document.getElementsByTagName("section")[0];
     let chartDiv1 = headerSection.querySelector('div#chartDiv1');

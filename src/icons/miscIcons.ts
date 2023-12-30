@@ -1,5 +1,5 @@
 //Do not count these icons in the digital distribution stores chart
-const miscIcons: Record<string, number> = {};
+export const miscIcons: Record<string, number> = {};
 miscIcons['floppy'] = 16;
 miscIcons['disc'] = 17;
 miscIcons['cartridge'] = 18;

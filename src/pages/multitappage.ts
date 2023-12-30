@@ -1,5 +1,3 @@
-/// <reference path="../iconfunctions.ts" />
-
 //Process multitap
 // function processMultitap() {
 //     $("div.friend li").each(function (this: Element) {

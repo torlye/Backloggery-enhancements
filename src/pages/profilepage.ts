@@ -1,9 +1,9 @@
-/// <reference path="../iconfunctions.ts" />
-/// <reference path="../yearFunctions.ts" />
-/// <reference path="../utils.ts" />
+import { createIconsFromKeyWord, createScriptIconsElement } from "../iconfunctions";
+import { getDirectTextContent } from "../utils";
+import { createYearElement, createYearLabelFromKeyWord } from "../yearFunctions";
 
 //Process now playing list
-function processNowPlayingList() {
+export function processNowPlayingList() {
     document.querySelectorAll("div.npgame").forEach(element => {
         const progressDiv = element.querySelector('div:nth-last-child(2)');
         if (!progressDiv) return;
@@ -11,10 +11,11 @@ function processNowPlayingList() {
         const words: Array<string | null> = textContent.split(" ") ?? [];
         let hasYear = false;
         const scriptIconsSpan = createScriptIconsElement(progressDiv);
+        const yearElement = createYearElement(progressDiv?.previousElementSibling);
         for (const i in words) {
             const word = words[i];
-            if (!hasYear && progressDiv?.previousElementSibling) {
-                hasYear = createYearLabelFromKeyWord(word as string, progressDiv.previousElementSibling);
+            if (!hasYear && yearElement) {
+                hasYear = createYearLabelFromKeyWord(word as string, yearElement);
                 if (hasYear) {
                     words[i] = null;
                     continue;
