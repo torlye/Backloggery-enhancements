@@ -1,5 +1,5 @@
 //Association between keywords and icons
-const ddicons: Record<string, number> = {};
+export const ddicons: Record<string, number> = {};
 ddicons['gog.com'] = 0;
 ddicons['gog'] = 0;
 ddicons['steampowered.com'] = 2;

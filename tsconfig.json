@@ -8,14 +8,13 @@
     ],
     "compilerOptions": {
         "strict": true,
-        "target": "es6",
+        "target": "es2020",
         "lib": [
             "dom",
-            "es6"
+            "es2020"
         ],
         "esModuleInterop": true,
-        "outFile": "build/script.js",
-        "moduleResolution": "node",
-        "module": "None"
+        "moduleResolution": "nodenext",
+        "module": "ES2022",
     }
 }

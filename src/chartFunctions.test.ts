@@ -1,5 +1,5 @@
-/// <reference path="chartFunctions.ts" />
-/// <reference path="state.ts" />
+import { getOwnershipCount, incrementGamesSum, setGamesSum, setOwnershipCount, updateDownloadServiceStatistics, updateSystemStatistics, updateYearStatistics } from './state';
+import { createPieChart, updateStatusChart, updateYearChart, updateDDserviceChart, updateSystemChart, updateOwnershipChart, chartWidth, chartHeight } from './chartFunctions';
 
 test('createPieChart', () => {
     expect(createPieChart("", "", "", false, 0, 0))
@@ -68,8 +68,8 @@ test('updateStatusChart', () => {
 
 test('updateSystemChart', () => {
     const headerSection = document.createElement('div');
-    updateSystemStatistics("Android"); gamesSum++;
-    updateSystemStatistics("Game Boy Advance"); gamesSum++;
+    updateSystemStatistics("Android"); incrementGamesSum();
+    updateSystemStatistics("Game Boy Advance"); incrementGamesSum();
     updateSystemChart(headerSection);
 
     const img = headerSection.querySelector('img#systemChart');
@@ -81,7 +81,7 @@ test('updateSystemChart', () => {
     expect(img?.getAttribute('width')).toBe(chartWidth.toString());
     expect(img?.getAttribute('height')).toBe(chartHeight.toString());
 
-    updateSystemStatistics("Android"); gamesSum++;
+    updateSystemStatistics("Android"); incrementGamesSum();
     updateSystemChart(headerSection);
     expect(img?.getAttribute('src'))
         .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A66.66666666666667%2C33.333333333333336&chl=Android%7CGame+Boy+Advance&chf=bg%2Cs%2C00000000&chco=7777ff");
@@ -89,8 +89,8 @@ test('updateSystemChart', () => {
 
 test('updateOwnershipChart', () => {
     const headerSection = document.createElement('div');
-    ownershipCount = [1, 2, 3, 4, 5, 6];
-    gamesSum = ownershipCount.reduce((prev, curr) => prev + curr);
+    setOwnershipCount([1, 2, 3, 4, 5, 6]);
+    setGamesSum(getOwnershipCount().reduce((prev, curr) => prev + curr));
     updateOwnershipChart(headerSection);
 
     const img = headerSection.querySelector('img#ownershipChart');
@@ -102,7 +102,7 @@ test('updateOwnershipChart', () => {
     expect(img?.getAttribute('width')).toBe(chartWidth.toString());
     expect(img?.getAttribute('height')).toBe(chartHeight.toString());
 
-    ownershipCount[0]++; gamesSum++;
+    getOwnershipCount()[0]++; incrementGamesSum();
     updateOwnershipChart(headerSection);
     expect(img?.getAttribute('src'))
         .toBe("https://chart.apis.google.com/chart?cht=p&chs=281x100&chd=t%3A9.090909090909092%2C9.090909090909092%2C13.636363636363637%2C18.181818181818183%2C22.727272727272727%2C27.272727272727273&chl=Owned%7CHousehold%7CSubscription%7CBorrowed%2FRented%7CFormerly+Owned%7COther&chf=bg%2Cs%2C00000000&chco=b6b718%2Cfffcb5%2Cdec123%2C7a9e9c%2C9bacff%2C9b89b6");

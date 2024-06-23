@@ -7,7 +7,18 @@ let gamesSum: number;
 let systemCount: Record<string, number>;
 let ownershipCount: number[];
 
-const resetStatistics = () => {
+export const getDownloadServiceStatistics = () => downloadServiceStatistics;
+export const getYearStatistics = () => yearStatistics;
+export const getDownloadServiceTotalCount = () => downloadServiceTotalCount;
+export const getYearTotalCount = () => yearTotalCount;
+export const getGamesSum = () => gamesSum;
+export const setGamesSum = (value: number) => gamesSum = value;
+export const incrementGamesSum = () => gamesSum++;
+export const getSystemCount = () => systemCount;
+export const getOwnershipCount = () => ownershipCount;
+export const setOwnershipCount = (value: number[]) => ownershipCount = value;
+
+export const resetStatistics = () => {
     downloadServiceStatistics = {};
     yearStatistics = {};
     downloadServiceTotalCount = 0;
@@ -19,7 +30,7 @@ const resetStatistics = () => {
 
 resetStatistics();
 
-function updateYearStatistics(year: string) {
+export function updateYearStatistics(year: string) {
     yearTotalCount++;
     if (!yearStatistics[year])
         yearStatistics[year] = 1;
@@ -28,14 +39,14 @@ function updateYearStatistics(year: string) {
         yearStatistics[year] += 1;
 }
 
-const updateSystemStatistics = (system: string) => {
+export const updateSystemStatistics = (system: string) => {
     if (!systemCount[system])
         systemCount[system] = 1;
     else
         systemCount[system]++;
 };
 
-const updateDownloadServiceStatistics = (keyWord: string) => {
+export const updateDownloadServiceStatistics = (keyWord: string) => {
     downloadServiceTotalCount++;
     if (!downloadServiceStatistics[keyWord])
         downloadServiceStatistics[keyWord] = 1;

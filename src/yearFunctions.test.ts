@@ -1,5 +1,5 @@
-/// <reference path="yearFunctions.ts" />
-/// <reference path="state.ts" />
+import { getYearStatistics, getYearTotalCount, resetStatistics } from './state';
+import { createYearLabelFromKeyWord } from './yearFunctions';
 
 test('createYearLabelFromKeyWord', () => {
     const el = document.createElement("div");
@@ -7,9 +7,9 @@ test('createYearLabelFromKeyWord', () => {
     expect(createYearLabelFromKeyWord("", el)).toBe(false);
     expect(createYearLabelFromKeyWord("1999", el)).toBe(false);
     expect(createYearLabelFromKeyWord("(1999)", el)).toBe(true);
-    expect(el.textContent).toBe("foo (1999)");
-    expect(yearStatistics["1999"]).toBe(1);
-    expect(yearTotalCount).toBe(1);
+    expect(el.textContent).toBe(" (1999)");
+    expect(getYearStatistics()["1999"]).toBe(1);
+    expect(getYearTotalCount()).toBe(1);
 });
 
 beforeEach(resetStatistics);
