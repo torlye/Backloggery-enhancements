@@ -1,6 +1,6 @@
 {
   "name": "backloggery-enhancements",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Adds pie charts and other enhancements to backloggery.com",
   "main": "src/script.ts",
   "repository": {
