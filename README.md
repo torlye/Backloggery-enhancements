@@ -181,6 +181,7 @@ This script uses icons from the ["Silk"](http://www.famfamfam.com/lab/icons/silk
 
 
 ## Changes
+- 3.0.0: First version to support the new "Remake" of backloggery.com. This version supports only the icons and year labels; the charts are not yet enabled. Also added backloggery.club, so the script works on the legacy site.
 - 2.2.3: Fixed unintentional "Achievements" text appearing in the 'Now Playing' section. Removed jQuery as a dependency.
 - 2.2.2: Fixed one more broken icon. Upgraded to manifest V3 for the Chrome extension.
 - 2.2.1: Fixed broken icons. Upgraded jQuery to the same version running on backloggery.com.
